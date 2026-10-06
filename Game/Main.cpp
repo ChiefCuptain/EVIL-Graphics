@@ -1,4 +1,4 @@
-#include "DinkiverseSandbox/DinkiverseSandbox.h"
+#include "Engine.h"
 #include <vector>
 #include <map>
 #include <memory>
@@ -14,8 +14,6 @@ using namespace nu;
 
         // INITIALIZATION
         Engine::Get().Initialize();
-        std::unique_ptr<Game> game = std::make_unique<DinkiverseSandbox>();
-        game->Initialize();
 
         // MAIN LOOP
         bool quit = false;
@@ -38,20 +36,17 @@ using namespace nu;
             float dt = Engine::Get().GetTime().GetDeltaTime();
 
             // Game
-            game->Update(dt);
 
             // RENDER
-            Engine::Get().GetRenderer().SetColor(0, 10, 20);
+            Engine::Get().GetRenderer().SetColor(0, 0, 0);
             Engine::Get().GetRenderer().Clear(); // Clear the renderer
 
-            game->Draw(Engine::Get().GetRenderer());
 
             Engine::Get().GetPS().Draw(Engine::Get().GetRenderer());
 
             Engine::Get().GetRenderer().RenderPresent();// Render the screen
         }
 
-        game.reset();
 
         // SHUTDOWN
         Engine::Get().Quit();

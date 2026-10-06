@@ -24,6 +24,7 @@
     <ProjectGuid>{d269b539-d0b0-4ede-ab0b-68a1604f8ced}</ProjectGuid>
     <RootNamespace>Game</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Graphics</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -159,14 +160,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DinkiverseSandbox\CameraController.cpp" />
-    <ClCompile Include="DinkiverseSandbox\CelestialBody.cpp" />
-    <ClCompile Include="DinkiverseSandbox\DinkiverseSandbox.cpp" />
-    <ClCompile Include="EvilSpaceGame\Assets.cpp" />
-    <ClCompile Include="EvilSpaceGame\Bullet.cpp" />
-    <ClCompile Include="EvilSpaceGame\Enemy.cpp" />
-    <ClCompile Include="EvilSpaceGame\EvilSpaceGame.cpp" />
-    <ClCompile Include="EvilSpaceGame\Player.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -182,17 +175,6 @@
     <None Include="..\Build\Assets\EvilSpaceGame\Animations\coin_spin.json" />
     <None Include="..\Build\Assets\EvilSpaceGame\Data\scene.json" />
     <None Include="..\Build\Assets\EvilSpaceGame\Textures\Tilemaps\world.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="DinkiverseSandbox\CameraController.h" />
-    <ClInclude Include="DinkiverseSandbox\Constants.h" />
-    <ClInclude Include="DinkiverseSandbox\DinkiverseSandbox.h" />
-    <ClInclude Include="DinkiverseSandbox\CelestialBody.h" />
-    <ClInclude Include="EvilSpaceGame\Assets.h" />
-    <ClInclude Include="EvilSpaceGame\Bullet.h" />
-    <ClInclude Include="EvilSpaceGame\Enemy.h" />
-    <ClInclude Include="EvilSpaceGame\EvilSpaceGame.h" />
-    <ClInclude Include="EvilSpaceGame\Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
