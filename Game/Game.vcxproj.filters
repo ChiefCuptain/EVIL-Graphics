@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="EvilSpaceGame">
+      <UniqueIdentifier>{639209ec-a2e1-4ee9-929e-aae166b9b7a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DinkiverseSandbox">
+      <UniqueIdentifier>{f56abb0c-3bd1-493c-82f7-f4e5e3bd23da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\EvilSpaceGame">
+      <UniqueIdentifier>{2a6267c0-234d-4855-a101-498252605471}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\DinkiverseSandbox">
+      <UniqueIdentifier>{382e3e3d-2f77-4a44-8909-fc4089845bd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\EvilSpaceGame\Scenes">
+      <UniqueIdentifier>{dcd7e641-ef85-4c1e-9e47-c2712a6570ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\EvilSpaceGame\Tilemaps">
+      <UniqueIdentifier>{58d2a1c9-111f-4f38-ab6f-65c437c45009}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\EvilSpaceGame\Animations">
+      <UniqueIdentifier>{df11ec51-eea0-4c89-b1ae-19d25565eed0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\DinkiverseSandbox\Animations">
+      <UniqueIdentifier>{dcec1a11-399a-4993-bb59-65164e9ac749}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\DinkiverseSandbox\Scenes">
+      <UniqueIdentifier>{751d00f4-4ae4-4b29-b633-f3334bbf57b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\DinkiverseSandbox\Tilemaps">
+      <UniqueIdentifier>{78e376bd-696c-4af2-8f53-960d61086cbd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Build\Assets\DinkiverseSandbox\Animations\planet_small.json">
+      <Filter>Assets\DinkiverseSandbox\Animations</Filter>
+    </None>
+    <None Include="..\Build\Assets\DinkiverseSandbox\Scenes\scene.json">
+      <Filter>Assets\DinkiverseSandbox\Scenes</Filter>
+    </None>
+    <None Include="..\Build\Assets\EvilSpaceGame\Data\scene.json">
+      <Filter>Assets\EvilSpaceGame\Scenes</Filter>
+    </None>
+    <None Include="..\Build\Assets\EvilSpaceGame\Textures\Tilemaps\world.json">
+      <Filter>Assets\EvilSpaceGame\Tilemaps</Filter>
+    </None>
+    <None Include="..\Build\Assets\EvilSpaceGame\Animations\coin_spin.json">
+      <Filter>Assets\EvilSpaceGame\Animations</Filter>
+    </None>
+    <None Include="..\Build\Assets\DinkiverseSandbox\Animations\planet_medium.json">
+      <Filter>Assets\DinkiverseSandbox\Animations</Filter>
+    </None>
+    <None Include="..\Build\Assets\DinkiverseSandbox\Animations\star.json">
+      <Filter>Assets\DinkiverseSandbox\Animations</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="EvilSpaceGame\Assets.cpp">
+      <Filter>EvilSpaceGame</Filter>
+    </ClCompile>
+    <ClCompile Include="EvilSpaceGame\Bullet.cpp">
+      <Filter>EvilSpaceGame</Filter>
+    </ClCompile>
+    <ClCompile Include="EvilSpaceGame\Enemy.cpp">
+      <Filter>EvilSpaceGame</Filter>
+    </ClCompile>
+    <ClCompile Include="EvilSpaceGame\EvilSpaceGame.cpp">
+      <Filter>EvilSpaceGame</Filter>
+    </ClCompile>
+    <ClCompile Include="EvilSpaceGame\Player.cpp">
+      <Filter>EvilSpaceGame</Filter>
+    </ClCompile>
+    <ClCompile Include="DinkiverseSandbox\DinkiverseSandbox.cpp">
+      <Filter>DinkiverseSandbox</Filter>
+    </ClCompile>
+    <ClCompile Include="DinkiverseSandbox\CelestialBody.cpp">
+      <Filter>DinkiverseSandbox</Filter>
+    </ClCompile>
+    <ClCompile Include="DinkiverseSandbox\CameraController.cpp">
+      <Filter>DinkiverseSandbox</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="EvilSpaceGame\Assets.h">
+      <Filter>EvilSpaceGame</Filter>
+    </ClInclude>
+    <ClInclude Include="EvilSpaceGame\Bullet.h">
+      <Filter>EvilSpaceGame</Filter>
+    </ClInclude>
+    <ClInclude Include="EvilSpaceGame\Enemy.h">
+      <Filter>EvilSpaceGame</Filter>
+    </ClInclude>
+    <ClInclude Include="EvilSpaceGame\EvilSpaceGame.h">
+      <Filter>EvilSpaceGame</Filter>
+    </ClInclude>
+    <ClInclude Include="EvilSpaceGame\Player.h">
+      <Filter>EvilSpaceGame</Filter>
+    </ClInclude>
+    <ClInclude Include="DinkiverseSandbox\DinkiverseSandbox.h">
+      <Filter>DinkiverseSandbox</Filter>
+    </ClInclude>
+    <ClInclude Include="DinkiverseSandbox\CelestialBody.h">
+      <Filter>DinkiverseSandbox</Filter>
+    </ClInclude>
+    <ClInclude Include="DinkiverseSandbox\Constants.h">
+      <Filter>DinkiverseSandbox</Filter>
+    </ClInclude>
+    <ClInclude Include="DinkiverseSandbox\CameraController.h">
+      <Filter>DinkiverseSandbox</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

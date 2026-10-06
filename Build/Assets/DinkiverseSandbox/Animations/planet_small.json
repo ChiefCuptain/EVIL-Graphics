@@ -1,0 +1,7 @@
+{
+  "texture_name": "Textures/spr_planet_small.png",
+  "columns": 6,
+  "rows": 3,
+  "start_frame": 0,
+  "total_frames": 18
+}

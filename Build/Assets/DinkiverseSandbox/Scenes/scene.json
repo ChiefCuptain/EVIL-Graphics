@@ -1,0 +1,134 @@
+{
+  "actors": [
+    {
+      "name": "Planet_Small",
+      "prototype": true,
+      "type": "CelestialBody",
+      "tag": "CelestialBody",
+      "persistent": true,
+      "active": true,
+      "is_affected": true,
+      "transform": {
+        "position": [
+          0,
+          0
+        ],
+        "rotation": 0,
+        "scale": 1.0
+      },
+      "components": [
+        {
+          "type": "SpriteAnimatorRendererComponent",
+          "default_animation": "spin",
+          "animations": [
+            {
+              "name": "spin",
+              "texture_frames": "Animations/planet_small.json",
+              "fps": 15,
+              "loop": true
+            }
+          ]
+        },
+        {
+          "type": "Box2DPhysicsComponent",
+          "linear_damping": 0,
+          "angular_damping": 0,
+          "density": 3000,
+          "shape": "circle",
+          "is_dynamic": true,
+          "is_sensor": true,
+          "is_bullet": true,
+          "size": [ 16, 16 ],
+          "gravity_scale": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Planet_Medium",
+      "prototype": true,
+      "type": "CelestialBody",
+      "tag": "CelestialBody",
+      "persistent": true,
+      "active": true,
+      "is_affected": true,
+      "transform": {
+        "position": [
+          0,
+          0
+        ],
+        "rotation": 0,
+        "scale": 1.0
+      },
+      "components": [
+        {
+          "type": "SpriteAnimatorRendererComponent",
+          "default_animation": "spin",
+          "animations": [
+            {
+              "name": "spin",
+              "texture_frames": "Animations/planet_medium.json",
+              "fps": 15,
+              "loop": true
+            }
+          ]
+        },
+        {
+          "type": "Box2DPhysicsComponent",
+          "linear_damping": 0,
+          "angular_damping": 0,
+          "density": 4000,
+          "shape": "circle",
+          "is_dynamic": true,
+          "is_bullet": true,
+          "is_sensor": true,
+          "size": [ 32, 32 ],
+          "gravity_scale": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Star",
+      "prototype": false,
+      "type": "CelestialBody",
+      "tag": "CelestialBody",
+      "persistent": true,
+      "active": true,
+      "is_affected": false,
+      "transform": {
+        "position": [
+          960,
+          540
+        ],
+        "rotation": 0,
+        "scale": 1.0
+      },
+      "components": [
+        {
+          "type": "SpriteAnimatorRendererComponent",
+          "default_animation": "idle",
+          "animations": [
+            {
+              "name": "idle",
+              "texture_frames": "Animations/star.json",
+              "fps": 8,
+              "loop": true
+            }
+          ]
+        },
+        {
+          "type": "Box2DPhysicsComponent",
+          "linear_damping": 0,
+          "angular_velocity": 15,
+          "angular_damping": 0,
+          "density": 8000,
+          "shape": "circle",
+          "is_dynamic": true,
+          "is_sensor": true,
+          "size": [ 96, 96 ],
+          "gravity_scale": 0.0
+        }
+      ]
+    }
+  ]
+}
+    

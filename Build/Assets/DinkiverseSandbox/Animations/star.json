@@ -1,0 +1,7 @@
+{
+  "texture_name": "Textures/spr_star.png",
+  "columns": 3,
+  "rows": 3,
+  "start_frame": 0,
+  "total_frames": 8
+}
