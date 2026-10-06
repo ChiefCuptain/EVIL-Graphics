@@ -11,7 +11,7 @@ namespace nu
 
 	bool Engine::Initialize()
 	{
-		m_renderer.Initialize("Dinkiverse Sandbox", 1920, 1080);
+		m_renderer.Initialize("EVIL Graphics", 1920, 1080);
 		m_particle_system.Initialize(500);
 		m_input.Initialize();
 		m_audio.Initialize();

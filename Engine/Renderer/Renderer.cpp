@@ -34,17 +34,12 @@ namespace nu
             SDL_Quit();
             return false;
         }
+        SDL_GPUShaderFormat formats = SDL_GPU_SHADERFORMAT_SPIRV | SDL_GPU_SHADERFORMAT_DXIL;
+        m_gpu_device = SDL_CreateGPUDevice(formats, true, NULL);
 
-        m_renderer = SDL_CreateRenderer(m_window, NULL);
-        if (m_renderer == nullptr) {
-            std::cerr << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
-            SDL_DestroyWindow(m_window);
-            SDL_Quit();
-            return false;
-        }
-
-        SDL_SetDefaultTextureScaleMode(m_renderer, SDL_SCALEMODE_PIXELART);
-        SDL_SetRenderVSync(m_renderer, 1);
+        SDL_ClaimWindowForGPUDevice(m_gpu_device, m_window);
+        
+        std::cout << "GPU Device : " << SDL_GetGPUDeviceDriver(m_gpu_device) << "\n";
 
         return true;
     }
@@ -61,6 +56,50 @@ namespace nu
 
     void Renderer::Clear() {
         SDL_RenderClear(m_renderer);
+    }
+
+    bool Renderer::BeginFrame()
+    {
+        m_command_buffer = SDL_AcquireGPUCommandBuffer(m_gpu_device);
+        if (!m_command_buffer)
+        {
+            std::cerr << "Could not acquire command buffer: " << SDL_GetError() << std::endl;
+            return false;
+        }
+
+
+        SDL_GPUTexture* swapchainTexture = nullptr;
+        if (!SDL_WaitAndAcquireGPUSwapchainTexture(m_command_buffer, m_window, &swapchainTexture, nullptr, nullptr))
+        {
+            std::cerr << "Could not acquire swapchain texture: " << SDL_GetError() << std::endl;
+            return false;
+        }
+
+        if (swapchainTexture != nullptr)
+        {
+            // configure the color target attachments (This handles clearing the screen)
+            SDL_GPUColorTargetInfo color_target_info{};
+            color_target_info.texture = swapchainTexture;
+            color_target_info.clear_color = SDL_FColor{ 1.0f, 0.0f, 0.0f, 1.0f };
+            color_target_info.load_op = SDL_GPU_LOADOP_CLEAR;
+            color_target_info.store_op = SDL_GPU_STOREOP_STORE;
+
+            m_render_pass = SDL_BeginGPURenderPass(m_command_buffer, &color_target_info, 1, nullptr);
+            SDL_EndGPURenderPass(m_render_pass);
+        }
+
+        return true;
+    }
+
+    bool Renderer::EndFrame() const
+    {
+        if (!SDL_SubmitGPUCommandBuffer(m_command_buffer))
+        {
+            std::cerr << "Could not submit command buffer: " << SDL_GetError() << std::endl;
+            return false;
+        }
+
+        return true;
     }
 
     void Renderer::RenderPresent() const

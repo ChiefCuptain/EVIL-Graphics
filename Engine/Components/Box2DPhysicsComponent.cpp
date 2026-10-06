@@ -3,7 +3,6 @@
 #include "Core/Factory.h"
 #include "Framework/Actor.h"
 #include "Engine.h"
-#include "../../Game/DinkiverseSandbox/CelestialBody.h"
 
 namespace nu
 {
@@ -21,11 +20,6 @@ namespace nu
 		m_bodyDef.actor = GetOwner();
 		m_physicsBody = std::make_unique<PhysicsBody>(GetOwner()->GetTransform(), m_size, m_bodyDef, Engine::Get().GetPhysics());
 
-		auto celestialBody = dynamic_cast<CelestialBody*>(m_bodyDef.actor);
-		if (celestialBody)
-		{
-			SetVelocity(celestialBody->GetStartVelocity());
-		}
 	}
 
 	void Box2DPhysicsComponent::Update(float dt)

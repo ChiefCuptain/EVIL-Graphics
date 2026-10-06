@@ -38,13 +38,14 @@ using namespace nu;
             // Game
 
             // RENDER
-            Engine::Get().GetRenderer().SetColor(0, 0, 0);
+            Engine::Get().GetRenderer().BeginFrame();
             Engine::Get().GetRenderer().Clear(); // Clear the renderer
 
 
             Engine::Get().GetPS().Draw(Engine::Get().GetRenderer());
 
-            Engine::Get().GetRenderer().RenderPresent();// Render the screen
+            Engine::Get().GetRenderer().EndFrame();
+
         }
 
 

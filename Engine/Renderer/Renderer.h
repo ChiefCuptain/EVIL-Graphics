@@ -17,6 +17,9 @@ namespace nu {
 
 		void Clear();
 
+		bool BeginFrame();
+		bool EndFrame() const;
+
 		void RenderPresent() const;
 		void RenderPoint(float x, float y) const;
 		void RenderLine(float x1, float y1, float x2, float y2) const;
@@ -39,6 +42,10 @@ namespace nu {
 		friend class Texture;
 		friend class Text;
 	private:
+
+		SDL_GPUDevice* m_gpu_device = nullptr;
+		SDL_GPUCommandBuffer* m_command_buffer = nullptr;
+		SDL_GPURenderPass* m_render_pass = nullptr;
 
 		Vector2 m_camera{ 0.0f };
 		bool m_camera_enabled = false;
