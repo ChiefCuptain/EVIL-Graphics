@@ -5,6 +5,8 @@
 #include "Math/MathUtil.h"
 #include "Renderer/Texture.h"
 #include "Math/Rect.h"
+#include "Renderer/Pipeline.h"
+#include "Renderer/VertexBuffer.h"
 
 namespace nu
 {
@@ -280,6 +282,53 @@ namespace nu
             flip_type = SDL_FLIP_VERTICAL;
         }
         SDL_RenderTextureRotated(m_renderer, texture.m_texture, &sourceRect, &destRect, transform.rotation, NULL, flip_type);
+    }
+
+    void Renderer::SetPipeline(const Pipeline& pipeline)
+    {
+        SDL_BindGPUGraphicsPipeline(m_render_pass, pipeline.m_gpuPipeline);
+    }
+
+    void Renderer::SetVertexBuffer(const VertexBuffer& vertexBuffer)
+    {
+        // describe which buffer to bind and where to start reading from
+        SDL_GPUBufferBinding binding{
+            .buffer = vertexBuffer.m_gpuBuffer , // todo: the vertex buffer's gpu buffer
+            .offset = 0   // start reading at the beginning of the buffer
+        };
+
+        // bind the vertex buffer to the current render pass with SDL_BindGPUVertexBuffers()
+        // the draw calls that follow read their vertices from this buffer
+        // parameters:
+        //   render pass   - the current render pass (m_renderPass)
+        //   first slot    - 0, matches the buffer slot set in Pipeline::AddVertexBuffer()
+        //   bindings      - pointer to the binding above
+        //   binding count - 1, we are binding one buffer
+
+        SDL_BindGPUVertexBuffers(
+            m_render_pass,
+            0,
+            &binding,
+            1
+        );
+    }
+
+    void Renderer::Draw(uint32_t vertexCount)
+    {
+        // draw using the currently bound pipeline and vertex buffer with SDL_DrawGPUPrimitives()
+        // parameters:
+        //   render pass    - the current render pass (m_renderPass)
+        //   vertex count   - the number of vertices to draw (vertexCount)
+        //   instance count - 1, draw one copy (more than 1 is used for instancing)
+        //   first vertex   - 0, start at the first vertex in the buffer
+        //   first instance - 0, start at the first instance
+        SDL_DrawGPUPrimitives(
+            m_render_pass,
+            vertexCount,
+            1,
+            0,
+            0
+        );
     }
 
     Renderer::~Renderer()
