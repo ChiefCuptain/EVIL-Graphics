@@ -20,6 +20,9 @@ namespace nu {
 		bool BeginFrame();
 		bool EndFrame();
 
+		void SetVertexUniform(uint32_t slot, const void* data, uint32_t size);
+		void SetFragmentUniform(uint32_t slot, const void* data, uint32_t size);
+
 		void RenderPresent() const;
 		void RenderPoint(float x, float y) const;
 		void RenderLine(float x1, float y1, float x2, float y2) const;

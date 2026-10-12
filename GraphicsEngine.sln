@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36623.8 d17.14
+VisualStudioVersion = 17.14.36623.8
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game", "Game\Game.vcxproj", "{D269B539-D0B0-4EDE-AB0B-68A1604F8CED}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Graphics", "Game\Game.vcxproj", "{D269B539-D0B0-4EDE-AB0B-68A1604F8CED}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine", "Engine\Engine.vcxproj", "{6913DABD-E096-47B7-B492-B44CF1BC7F87}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shaders", "Shaders\Shaders.vcxproj", "{1DC1933F-925A-3EB9-AC2E-61B6862B1F0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,14 @@ Global
 		{6913DABD-E096-47B7-B492-B44CF1BC7F87}.Release|x64.Build.0 = Release|x64
 		{6913DABD-E096-47B7-B492-B44CF1BC7F87}.Release|x86.ActiveCfg = Release|Win32
 		{6913DABD-E096-47B7-B492-B44CF1BC7F87}.Release|x86.Build.0 = Release|Win32
+		{1DC1933F-925A-3EB9-AC2E-61B6862B1F0C}.Debug|x64.ActiveCfg = Debug|x64
+		{1DC1933F-925A-3EB9-AC2E-61B6862B1F0C}.Debug|x64.Build.0 = Debug|x64
+		{1DC1933F-925A-3EB9-AC2E-61B6862B1F0C}.Debug|x86.ActiveCfg = Debug|Win32
+		{1DC1933F-925A-3EB9-AC2E-61B6862B1F0C}.Debug|x86.Build.0 = Debug|Win32
+		{1DC1933F-925A-3EB9-AC2E-61B6862B1F0C}.Release|x64.ActiveCfg = Release|x64
+		{1DC1933F-925A-3EB9-AC2E-61B6862B1F0C}.Release|x64.Build.0 = Release|x64
+		{1DC1933F-925A-3EB9-AC2E-61B6862B1F0C}.Release|x86.ActiveCfg = Release|Win32
+		{1DC1933F-925A-3EB9-AC2E-61B6862B1F0C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

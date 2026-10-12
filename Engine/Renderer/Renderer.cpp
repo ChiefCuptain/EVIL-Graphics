@@ -111,6 +111,17 @@ namespace nu
         return true;
     }
 
+    void Renderer::SetVertexUniform(uint32_t slot, const void* data, uint32_t size)
+    {
+        SDL_PushGPUVertexUniformData(m_command_buffer, slot, data, size);
+    }
+
+    void Renderer::SetFragmentUniform(uint32_t slot, const void* data, uint32_t size)
+    {
+        SDL_PushGPUFragmentUniformData(m_command_buffer, slot, data, size);
+
+    }
+
     void Renderer::RenderPresent() const
     { 
         SDL_RenderPresent(m_renderer);
