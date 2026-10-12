@@ -11,9 +11,9 @@ using namespace nu;
 
 std::vector<Vector3> vertices =
 {
-    Vector3{ -1.0f, -1.0f, 0.0f}, // Bottom-Left
-    Vector3{  1.0f, -1.0f, 0.0f}, // Bottom-Right
-    Vector3{  0.0f,  1.0f, 0.0f}, // Top-Middle
+    Vector3{ -0.4f, -0.6f, 0.0f}, 
+    Vector3{  0.8f, 0.2f, 0.0f}, 
+    Vector3{  0.0f,  0.6f, 0.0f}, 
 };
 
     int main()
@@ -32,7 +32,7 @@ std::vector<Vector3> vertices =
         auto vshader = Resources().Get<nu::Shader>("shaders/position.vert", Engine::Get().GetRenderer());
         auto fshader = Resources().Get<nu::Shader>("shaders/color.frag", Engine::Get().GetRenderer());
 
-        auto pipeline = std::make_shared<Pipeline>();
+            auto pipeline = std::make_shared<Pipeline>();
         pipeline->AddVertexBuffer(sizeof(Vector3));
         pipeline->AddVertexAttribute(
             0,

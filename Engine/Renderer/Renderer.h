@@ -18,7 +18,7 @@ namespace nu {
 		void Clear();
 
 		bool BeginFrame();
-		bool EndFrame() const;
+		bool EndFrame();
 
 		void RenderPresent() const;
 		void RenderPoint(float x, float y) const;

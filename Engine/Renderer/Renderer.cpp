@@ -82,24 +82,31 @@ namespace nu
             // configure the color target attachments (This handles clearing the screen)
             SDL_GPUColorTargetInfo color_target_info{};
             color_target_info.texture = swapchainTexture;
-            color_target_info.clear_color = SDL_FColor{ 1.0f, 0.0f, 0.0f, 1.0f };
+            color_target_info.clear_color = SDL_FColor{ 0.3f, 0.3f, 0.3f, 1.0f };
             color_target_info.load_op = SDL_GPU_LOADOP_CLEAR;
             color_target_info.store_op = SDL_GPU_STOREOP_STORE;
 
             m_render_pass = SDL_BeginGPURenderPass(m_command_buffer, &color_target_info, 1, nullptr);
-            SDL_EndGPURenderPass(m_render_pass);
         }
 
         return true;
     }
 
-    bool Renderer::EndFrame() const
+    bool Renderer::EndFrame()
     {
+        if (m_render_pass)
+        {
+            SDL_EndGPURenderPass(m_render_pass);
+            m_render_pass = nullptr;
+        }
+
         if (!SDL_SubmitGPUCommandBuffer(m_command_buffer))
         {
             std::cerr << "Could not submit command buffer: " << SDL_GetError() << std::endl;
             return false;
         }
+
+        m_command_buffer = nullptr;
 
         return true;
     }
