@@ -3,6 +3,8 @@
 #include "Renderer/VertexBuffer.h"
 #include "Renderer/Pipeline.h"
 #include "Resources/ResourceManager.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <vector>
 #include <map>
 #include <memory>
@@ -65,6 +67,14 @@ std::vector<Vertex> vertices =
             Engine::Get().GetRenderer().GetGPUDevice(),
             Engine::Get().GetRenderer().GetWindow());
 
+        struct vertexUniform
+        {
+            glm::mat4 model;
+        };
+
+        vertexUniform uniform;
+
+        float rotation = 0.0f;
         // MAIN LOOP
         bool quit = false;
 
@@ -94,8 +104,15 @@ std::vector<Vertex> vertices =
             Engine::Get().GetRenderer().SetPipeline(*pipeline);
             Engine::Get().GetRenderer().SetVertexBuffer(*vb);
 
-            Engine::Get().GetRenderer().SetVertexUniform(0, &scale, sizeof(scale));
+            rotation += dt * 30.0f;
+            uniform.model = glm::mat4(1.0f);
+            uniform.model = glm::translate(uniform.model, glm::vec3(0.5f, 0.0f, 0.0f));
+            uniform.model = glm::scale(uniform.model, glm::vec3(0.5f, 0.5f, 0.5f));
+            uniform.model = glm::rotate(uniform.model, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+
+            Engine::Get().GetRenderer().SetVertexUniform(0, &uniform, sizeof(uniform));
             Engine::Get().GetRenderer().SetFragmentUniform(0, &color, sizeof(color));
+            
 
             Engine::Get().GetRenderer().Draw(vb->GetVertexCount());
 
