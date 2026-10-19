@@ -47,8 +47,12 @@ namespace nu {
 
 		void SetPipeline(const class Pipeline& pipeline);
 		void SetVertexBuffer(const class VertexBuffer& vertexBuffer);
+		void SetIndexBuffer(const class IndexBuffer& indexBuffer);
 		void Draw(uint32_t vertexCount);
+		void DrawIndex(const class IndexBuffer& indexBuffer);
 
+		friend class IndexBuffer;
+		friend class VertexBuffer;
 		friend class Texture;
 		friend class Text;
 		friend class Shader;
