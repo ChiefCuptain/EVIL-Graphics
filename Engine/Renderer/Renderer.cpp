@@ -144,32 +144,6 @@ namespace nu
         (fill) ? SDL_RenderFillRect(m_renderer, &rect) : SDL_RenderRect(m_renderer, &rect);
     }
 
-    void Renderer::DrawModel(const Model& model, const Transform& transform) const
-    {
-        for (auto& mesh : model.GetMeshes()) {
-            SetColorFloat(mesh.GetColor().r, mesh.GetColor().g, mesh.GetColor().b, 1.0f);
-            auto& points = mesh.GetPoints();
-            for (int i = 0; i < points.size(); ++i)
-            {
-                if (i == 0) { continue; }
-                Vector2 v1 = points.at(i - 1);
-                Vector2 v2 = points.at(i);
-
-                v1 *= transform.scale;
-                v2 *= transform.scale;
-
-                v1 = v1.Rotate(transform.rotation * DegToRad);
-                v2 = v2.Rotate(transform.rotation * DegToRad);
-
-                v1 += transform.position;
-                v2 += transform.position;
-
-                RenderLine(v1.x, v1.y, v2.x, v2.y);
-            }
-        }
-        
-    }
-
 
     void Renderer::DrawTexture(const Texture& texture, float x, float y, float angle, float scale, bool flipH, bool flipV) const
     {
@@ -208,8 +182,8 @@ namespace nu
         float cameraY = (m_camera_enabled) ? m_camera.y - GetWindowHeight() * 0.5f : 0.0f;
 
         SDL_FRect destRect;
-        destRect.w = size.x * transform.scale;
-        destRect.h = size.y * transform.scale;
+        destRect.w = size.x * transform.scale.x;
+        destRect.h = size.y * transform.scale.y;
 
 
         destRect.x = (transform.position.x + cameraX) - (destRect.w * 0.5f);
@@ -229,7 +203,7 @@ namespace nu
         {
             flip_type = SDL_FLIP_VERTICAL;
         }
-        SDL_RenderTextureRotated(m_renderer, texture.m_texture, NULL, &destRect, transform.rotation, NULL, flip_type);
+        SDL_RenderTextureRotated(m_renderer, texture.m_texture, NULL, &destRect, transform.rotation.z, NULL, flip_type);
     }
 
     void Renderer::DrawTexture(const Texture& texture, const Rect& source, float x, float y, float angle, float scale, bool flipH, bool flipV) const
@@ -279,8 +253,8 @@ namespace nu
         sourceRect.h = source.h;
 
         SDL_FRect destRect;
-        destRect.w = source.w * transform.scale;
-        destRect.h = source.h * transform.scale;
+        destRect.w = source.w * transform.scale.x;
+        destRect.h = source.h * transform.scale.y;
 
         destRect.x = (transform.position.x + cameraX) - (destRect.w * 0.5f);
         destRect.y = (transform.position.y + cameraY) - (destRect.h * 0.5f);
@@ -300,7 +274,7 @@ namespace nu
         {
             flip_type = SDL_FLIP_VERTICAL;
         }
-        SDL_RenderTextureRotated(m_renderer, texture.m_texture, &sourceRect, &destRect, transform.rotation, NULL, flip_type);
+        SDL_RenderTextureRotated(m_renderer, texture.m_texture, &sourceRect, &destRect, transform.rotation.z, NULL, flip_type);
     }
 
     void Renderer::SetPipeline(const Pipeline& pipeline)

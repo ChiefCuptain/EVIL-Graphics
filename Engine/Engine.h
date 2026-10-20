@@ -23,7 +23,6 @@
 #include "Math/MathUtil.h"
 #include "Renderer/ParticleSystem.h"
 #include "Audio/Audio.h"
-#include "Physics/Physics.h"
 
 #include "Framework/Game.h"
 
@@ -48,7 +47,6 @@ namespace nu
 		GameTime& GetTime() { return m_time; }
 		ParticleSystem& GetPS() { return m_particle_system; }
 		Audio& GetAudio() { return m_audio; }
-		Physics& GetPhysics() { return m_physics; }
 		Engine(const Engine&) = delete;
 		Engine& operator = (const Engine&) = delete;
 
@@ -58,7 +56,6 @@ namespace nu
 		Input m_input;
 		Renderer m_renderer;
 		Audio m_audio;
-		Physics m_physics;
 		GameTime m_time;
 		ParticleSystem m_particle_system;
 	};

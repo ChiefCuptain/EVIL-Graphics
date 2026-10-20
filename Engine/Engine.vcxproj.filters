@@ -60,9 +60,6 @@
     <ClInclude Include="Components\ColliderComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="Components\CircleColliderComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="Math\MathUtil.h">
       <Filter>Math</Filter>
     </ClInclude>
@@ -84,29 +81,14 @@
     <ClInclude Include="Components\SpriteAnimationRendererComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="Components\RigidBodyPhysicsComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="Components\PhysicsComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Components\Component.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="Physics\Physics.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics\PhysicsBody.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Components\Box2DPhysicsComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer\Tilemap.h">
       <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Components\TilemapRendererComponent.h">
-      <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Audio\Audio.h">
       <Filter>Audio</Filter>
@@ -200,9 +182,6 @@
     <ClCompile Include="Components\SpriteRendererComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="Components\CircleColliderComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer\TextureFrames.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
@@ -212,23 +191,8 @@
     <ClCompile Include="Components\PhysicsComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="Components\RigidBodyPhysicsComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics\Physics.cpp">
-      <Filter>Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics\PhysicsBody.cpp">
-      <Filter>Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="Components\Box2DPhysicsComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer\Tilemap.cpp">
       <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Components\TilemapRendererComponent.cpp">
-      <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="Audio\Audio.cpp">
       <Filter>Audio</Filter>

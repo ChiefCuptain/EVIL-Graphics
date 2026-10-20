@@ -28,7 +28,6 @@ namespace nu {
 		void RenderLine(float x1, float y1, float x2, float y2) const;
 		void RenderRect(float x, float y, float width, float height, bool fill) const;
 
-		void DrawModel(const class Model& model, const class Transform& transform) const;
 		void DrawTexture(const class Texture& texture, float x, float y, float angle = 0.0f, float scale = 1.0f, bool flipH = false, bool flipV = false) const;
 		void DrawTexture(const class Texture& texture, const class Transform& transform, bool flipH = false, bool flipV = false) const;
 		void DrawTexture(const class Texture& texture, const struct Rect& source, float x, float y, float angle = 0.0f, float scale = 1.0f, bool flipH = false, bool flipV = false) const;

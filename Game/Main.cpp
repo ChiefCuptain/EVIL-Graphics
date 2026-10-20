@@ -1,10 +1,9 @@
-#include "Engine.h"
+    #include "Engine.h"
 #include "Renderer/Shader.h"
 #include "Renderer/VertexBuffer.h"
 #include "Renderer/IndexBuffer.h"
 #include "Renderer/Pipeline.h"
 #include "Resources/ResourceManager.h"
-
 #include <vector>
 #include <map>
 #include <memory>
@@ -48,26 +47,18 @@ std::vector<uint32_t> indices = { 0, 1, 2, 2, 3, 0 };
         // INITIALIZATION
         Engine::Get().Initialize();
 
-        auto vb = std::make_shared<VertexBuffer>();
-        vb->Create<Vertex>(vertices, Engine::Get().GetRenderer());
+        auto model = Resources().Get<Model>("Models/bushters.obj", Engine::Get().GetRenderer());
 
-        auto ib = std::make_shared<IndexBuffer>();
-        ib->Create(indices.size(), indices.data(), Engine::Get().GetRenderer());
+        auto vshader = Resources().Get<nu::Shader>("Shaders/unlit.vert", Engine::Get().GetRenderer(), 1);
+        auto fshader = Resources().Get<nu::Shader>("Shaders/unlit.frag", Engine::Get().GetRenderer(), 1);
 
-        auto vshader = Resources().Get<nu::Shader>("shaders/position.vert", Engine::Get().GetRenderer(), 1);
-        auto fshader = Resources().Get<nu::Shader>("shaders/color.frag", Engine::Get().GetRenderer(), 1);
+        auto pipeline = std::make_shared<Pipeline>();
 
-            auto pipeline = std::make_shared<Pipeline>();
-        pipeline->AddVertexBuffer(sizeof(Vertex));
-        pipeline->AddVertexAttribute(
-            0,
-            SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3,
-            offsetof(Vertex, position));
-
-        pipeline->AddVertexAttribute(
-            1,
-            SDL_GPU_VERTEXELEMENTFORMAT_FLOAT4,
-            offsetof(Vertex, color));
+        pipeline->AddVertexBuffer(sizeof(Model::Vertex));
+        pipeline->AddVertexAttribute(0, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3, offsetof(Model::Vertex, position));
+        pipeline->AddVertexAttribute(1, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2, offsetof(Model::Vertex, texcoord));
+        pipeline->AddVertexAttribute(2, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3, offsetof(Model::Vertex, normal));
+        pipeline->AddVertexAttribute(3, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3, offsetof(Model::Vertex, tangent));
 
         pipeline->Create(*vshader.get(), *fshader.get(),
             Engine::Get().GetRenderer().GetGPUDevice(),
@@ -83,6 +74,8 @@ std::vector<uint32_t> indices = { 0, 1, 2, 2, 3, 0 };
         float rotation = 0.0f;
         // MAIN LOOP
         bool quit = false;
+
+        Transform transform;
 
         while (!quit) {
             SDL_Event event;
@@ -119,8 +112,6 @@ std::vector<uint32_t> indices = { 0, 1, 2, 2, 3, 0 };
             Engine::Get().GetRenderer().BeginFrame();
 
             Engine::Get().GetRenderer().SetPipeline(*pipeline);
-            Engine::Get().GetRenderer().SetVertexBuffer(*vb);
-            Engine::Get().GetRenderer().SetIndexBuffer(*ib);
 
             rotation += dt * 100.0f;
             //uniform.model = glm::mat4(1.0f);
@@ -128,28 +119,24 @@ std::vector<uint32_t> indices = { 0, 1, 2, 2, 3, 0 };
             //uniform.model = glm::rotate(uniform.model, glm::radians(rotation), glm::vec3(1.0f, 1.0f, 1.0f));
             //uniform.model = glm::scale(uniform.model, glm::vec3(0.5f, 0.5f, 0.5f));
 
-            auto mxt = glm::translate(glm::vec3{ 0.5f, 0.0f, 0.0f });
-            auto mxr = glm::eulerAngleYXZ(glm::radians(rotation) * 0.5f, glm::radians(rotation) * -1.0f, glm::radians(rotation));
-            auto mxs = glm::scale(glm::vec3{ 1.0f, 1.0f, 1.0f });
-            
-            auto model = mxt * mxr * mxs;
+
+            // TRANSFORM
+            transform.rotation.y = Engine::Get().GetTime().GetTime() * 30.0f;
 
             // VIEW MATRIX
 
-            auto view = glm::lookAtRH(cameraPosition, cameraPosition + glm::vec3{0.0f, 0.0f, -1.0f}, glm::vec3{0.0f, 1.0f, 0.0f});
+            auto view = glm::lookAtRH(cameraPosition, cameraPosition + glm::vec3{ 0.0f, 0.0f, -1.0f }, glm::vec3{ 0.0f, 1.0f, 0.0f });
 
             // PROJECTION MATRIX
             float aspectRatio = Engine::Get().GetRenderer().GetWindowWidth() / Engine::Get().GetRenderer().GetWindowHeight();
             auto projection = glm::perspective(glm::radians(100.0f), aspectRatio, 0.01f, 20.0f);
 
 
-            uniform.mvp = projection * view * model;
-
+            uniform.mvp = projection * view * transform.GetMatrix();
             Engine::Get().GetRenderer().SetVertexUniform(0, &uniform, sizeof(uniform));
             Engine::Get().GetRenderer().SetFragmentUniform(0, &color, sizeof(color));
-            
 
-            Engine::Get().GetRenderer().DrawIndex(*ib);
+            model->Draw(Engine::Get().GetRenderer());
 
             Engine::Get().GetRenderer().EndFrame();
 

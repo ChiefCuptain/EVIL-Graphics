@@ -56,7 +56,6 @@ namespace nu
 
 	void Scene::Update(float dt)
 	{
-		Engine::Get().GetPhysics().Update(dt);
 
 		for (auto& actor : m_actors)
 		{

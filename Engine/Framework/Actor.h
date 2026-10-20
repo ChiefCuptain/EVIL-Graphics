@@ -12,25 +12,25 @@ namespace nu
 
     struct ActorDesc
     {
-        std::string name = "undefined";
-        std::string tag = "undefined";
-        Transform transform;
-        Vector2 velocity{ 0.0f };
-        float lifespan = -1.0f;
-        res_t<Model> model;
-        res_t<Texture> texture;
+        //std::string name = "undefined";
+        //std::string tag = "undefined";
+        //Transform transform;
+        //Vector2 velocity{ 0.0f };
+        //float lifespan = -1.0f;
+        //res_t<Model> model;
+        //res_t<Texture> texture;
     };
 
     class Actor : public Object
     {
     public:
         Actor() = default;
-        Actor(const ActorDesc& actorDesc) :
+        /*Actor(const ActorDesc& actorDesc) :
             Object{ actorDesc.name },
             m_tag{ actorDesc.tag },
             m_transform{ actorDesc.transform },
             m_lifespan{ actorDesc.lifespan }
-        { }
+        { }*/
 
         Actor(const Actor& other);
 
@@ -47,11 +47,11 @@ namespace nu
 
         void SetTransform(const Transform& transform);
 
-        void SetPosition(const Vector2& position) { m_transform.position = position; }
+        void SetPosition(const glm::vec3& position) { m_transform.position = position; }
 
-        void SetRotation(float rotation) { m_transform.rotation = rotation; }
+        void SetRotation(const glm::vec3& rotation) { m_transform.rotation = rotation; }
 
-        void SetScale(float scale) { m_transform.scale = scale; }
+        void SetScale(const glm::vec3& scale) { m_transform.scale = scale; }
 
         const std::string& GetName() const { return m_name; }
         const std::string& GetTag() const { return m_tag; }
