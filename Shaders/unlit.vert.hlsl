@@ -19,8 +19,8 @@ struct Output
 Output main(Input input)
 {
     Output output;
-    output.position = mul(mvp, float4(input.position, 1.0f));
     output.texcoord = input.texcoord;
+    output.position = mul(mvp, float4(input.position, 1.0f));
 
     return output;
 }

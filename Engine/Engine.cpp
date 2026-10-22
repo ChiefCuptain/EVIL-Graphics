@@ -12,7 +12,6 @@ namespace nu
 	bool Engine::Initialize()
 	{
 		m_renderer.Initialize("EVIL Graphics", 1920, 1080);
-		m_particle_system.Initialize(500);
 		m_input.Initialize();
 		m_audio.Initialize();
 
@@ -23,7 +22,6 @@ namespace nu
 	{
 		m_audio.Quit();
 		m_input.Quit();
-		m_particle_system.Quit();
 		m_renderer.Quit();
 	}
 
@@ -32,6 +30,5 @@ namespace nu
 		m_time.Tick();
 		m_audio.Update();
 		m_input.Update();
-		m_particle_system.Update(m_time.GetDeltaTime());
 	}
 }

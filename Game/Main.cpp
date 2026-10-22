@@ -1,4 +1,4 @@
-    #include "Engine.h"
+#include "Engine.h"
 #include "Renderer/Shader.h"
 #include "Renderer/VertexBuffer.h"
 #include "Renderer/IndexBuffer.h"
@@ -10,33 +10,7 @@
 
 using namespace nu;
 
-namespace nu
-{
-    struct Color4
-    {
-        float r, g, b, a;
-    };
 
-}
-
-struct Vertex
-{
-    Vector3 position;
-    Color4 color;
-};
-
-std::vector<Vertex> vertices =
-{
-    Vertex{ {-0.5f, -0.5f, 0.6f}, { 1.0f, 0.0f, 0.0f, 1.0f } }, // Bottom-left
-    Vertex{ { -0.5f, 0.5f, 0.0f}, { 0.0f, 1.0f, 0.0f, 1.0f } }, // Top-left
-    Vertex{ { 0.5f,  0.5f, 0.6f}, { 0.0f, 0.0f, 1.0f, 1.0f } }, // Top-right
-    Vertex{ { 0.5f,  -0.5f, 0.0f}, { 1.0f, 0.0f, 1.0f, 1.0f } }, // Bottom-right
-};
-
-std::vector<uint32_t> indices = { 0, 1, 2, 2, 3, 0 };
-
-    float scale = 0.5f;
-    Color4 color = { 1.0f, 0.53f, 1.0f, 1.0f };
     int main()
     {
         // don't move this
@@ -47,10 +21,11 @@ std::vector<uint32_t> indices = { 0, 1, 2, 2, 3, 0 };
         // INITIALIZATION
         Engine::Get().Initialize();
 
-        auto model = Resources().Get<Model>("Models/bushters.obj", Engine::Get().GetRenderer());
+        auto model = Resources().Get<Model>("Models/spot.obj", Engine::Get().GetRenderer());
+        auto texture = Resources().Get<Texture>("Textures/spot_diffuse.png", Engine::Get().GetRenderer());
 
         auto vshader = Resources().Get<nu::Shader>("Shaders/unlit.vert", Engine::Get().GetRenderer(), 1);
-        auto fshader = Resources().Get<nu::Shader>("Shaders/unlit.frag", Engine::Get().GetRenderer(), 1);
+        auto fshader = Resources().Get<nu::Shader>("Shaders/unlit.frag", Engine::Get().GetRenderer(), 1, 1);
 
         auto pipeline = std::make_shared<Pipeline>();
 
@@ -76,7 +51,7 @@ std::vector<uint32_t> indices = { 0, 1, 2, 2, 3, 0 };
         bool quit = false;
 
         Transform transform;
-
+        glm::float4 color{ 1, 1, 1, 1 };
         while (!quit) {
             SDL_Event event;
             while (SDL_PollEvent(&event)) {
@@ -93,7 +68,6 @@ std::vector<uint32_t> indices = { 0, 1, 2, 2, 3, 0 };
             Engine::Get().Update();
 
             float dt = Engine::Get().GetTime().GetDeltaTime();
-            scale = sin(Engine::Get().GetTime().GetTime() * 30.0f);
             glm::vec3 direction{ 0 };
 
             // CAMERA MOVEMENT
@@ -135,6 +109,7 @@ std::vector<uint32_t> indices = { 0, 1, 2, 2, 3, 0 };
             uniform.mvp = projection * view * transform.GetMatrix();
             Engine::Get().GetRenderer().SetVertexUniform(0, &uniform, sizeof(uniform));
             Engine::Get().GetRenderer().SetFragmentUniform(0, &color, sizeof(color));
+            Engine::Get().GetRenderer().SetFragmentTexture(0, *texture);
 
             model->Draw(Engine::Get().GetRenderer());
 

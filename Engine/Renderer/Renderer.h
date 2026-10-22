@@ -28,10 +28,7 @@ namespace nu {
 		void RenderLine(float x1, float y1, float x2, float y2) const;
 		void RenderRect(float x, float y, float width, float height, bool fill) const;
 
-		void DrawTexture(const class Texture& texture, float x, float y, float angle = 0.0f, float scale = 1.0f, bool flipH = false, bool flipV = false) const;
-		void DrawTexture(const class Texture& texture, const class Transform& transform, bool flipH = false, bool flipV = false) const;
-		void DrawTexture(const class Texture& texture, const struct Rect& source, float x, float y, float angle = 0.0f, float scale = 1.0f, bool flipH = false, bool flipV = false) const;
-		void DrawTexture(const class Texture& texture, const struct Rect& source, const class Transform& transform, bool flipH = false, bool flipV = false) const;
+		void SetFragmentTexture(uint32_t slot, const class Texture& texture);
 
 		float GetWindowWidth() const { return m_screen_size.x; }
 		float GetWindowHeight() const { return m_screen_size.y; }
@@ -50,6 +47,8 @@ namespace nu {
 		void Draw(uint32_t vertexCount);
 		void DrawIndex(const class IndexBuffer& indexBuffer);
 
+		void CreateDepthBuffer();
+
 		friend class IndexBuffer;
 		friend class VertexBuffer;
 		friend class Texture;
@@ -61,6 +60,7 @@ namespace nu {
 		SDL_GPUDevice* m_gpu_device = nullptr;
 		SDL_GPUCommandBuffer* m_command_buffer = nullptr;
 		SDL_GPURenderPass* m_render_pass = nullptr;
+		SDL_GPUTexture* m_depthTexture = nullptr;
 
 		Vector2 m_camera{ 0.0f };
 		bool m_camera_enabled = false;

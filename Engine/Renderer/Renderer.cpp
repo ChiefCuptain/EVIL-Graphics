@@ -44,6 +44,8 @@ namespace nu
         
         std::cout << "GPU Device : " << SDL_GetGPUDeviceDriver(m_gpu_device) << "\n";
 
+        CreateDepthBuffer();
+
         return true;
     }
 
@@ -86,8 +88,16 @@ namespace nu
             color_target_info.clear_color = SDL_FColor{ 0.3f, 0.3f, 0.3f, 1.0f };
             color_target_info.load_op = SDL_GPU_LOADOP_CLEAR;
             color_target_info.store_op = SDL_GPU_STOREOP_STORE;
-
-            m_render_pass = SDL_BeginGPURenderPass(m_command_buffer, &color_target_info, 1, nullptr);
+            // configure the depth target (This handles the depth sorting)
+            SDL_GPUDepthStencilTargetInfo depth_target_info{
+                .texture = m_depthTexture,
+                .clear_depth = 1.0f,
+                .load_op = SDL_GPU_LOADOP_CLEAR,
+                .store_op = SDL_GPU_STOREOP_DONT_CARE,
+                .stencil_load_op = SDL_GPU_LOADOP_DONT_CARE,
+                .stencil_store_op = SDL_GPU_STOREOP_DONT_CARE,
+            };
+            m_render_pass = SDL_BeginGPURenderPass(m_command_buffer, &color_target_info, 1, &depth_target_info);
         }
 
         return true;
@@ -144,138 +154,17 @@ namespace nu
         (fill) ? SDL_RenderFillRect(m_renderer, &rect) : SDL_RenderRect(m_renderer, &rect);
     }
 
-
-    void Renderer::DrawTexture(const Texture& texture, float x, float y, float angle, float scale, bool flipH, bool flipV) const
+    void Renderer::SetFragmentTexture(uint32_t slot, const Texture& texture)
     {
-        Vector2 size = texture.GetSize();
-
-        float cameraX = (m_camera_enabled) ? m_camera.x - GetWindowWidth() * 0.5f : 0.0f;
-        float cameraY = (m_camera_enabled) ? m_camera.y - GetWindowHeight() * 0.5f : 0.0f;
-
-        SDL_FRect destRect;
-        destRect.w = size.x * scale;
-        destRect.h = size.y * scale;
-        destRect.x = (x - cameraX) - (destRect.w * 0.5f);
-        destRect.y = (y - cameraY) - (destRect.h * 0.5f);
-
-        // https://wiki.libsdl.org/SDL3/SDL_RenderTexture
-        SDL_FlipMode flip_type = SDL_FLIP_NONE;
-        if (flipH && flipV)
+        SDL_GPUTextureSamplerBinding binding
         {
-            flip_type = SDL_FLIP_HORIZONTAL_AND_VERTICAL;
-        }
-        else if (flipH)
-        {
-            flip_type = SDL_FLIP_HORIZONTAL;
-        }
-        else if (flipV)
-        {
-            flip_type = SDL_FLIP_VERTICAL;
-        }
-        SDL_RenderTextureRotated(m_renderer, texture.m_texture, NULL, &destRect, angle, NULL, flip_type);
+            .texture = texture.m_gpuTexture,
+            .sampler = texture.m_gpuSampler
+        };
+
+        SDL_BindGPUFragmentSamplers(m_render_pass, slot, &binding, 1);
     }
 
-    void Renderer::DrawTexture(const Texture& texture, const Transform& transform, bool flipH, bool flipV) const
-    {
-        Vector2 size = texture.GetSize();
-        float cameraX = (m_camera_enabled) ? m_camera.x - GetWindowWidth() * 0.5f : 0.0f;
-        float cameraY = (m_camera_enabled) ? m_camera.y - GetWindowHeight() * 0.5f : 0.0f;
-
-        SDL_FRect destRect;
-        destRect.w = size.x * transform.scale.x;
-        destRect.h = size.y * transform.scale.y;
-
-
-        destRect.x = (transform.position.x + cameraX) - (destRect.w * 0.5f);
-        destRect.y = (transform.position.y + cameraY) - (destRect.h * 0.5f);
-
-        // https://wiki.libsdl.org/SDL3/SDL_RenderTexture
-        SDL_FlipMode flip_type = SDL_FLIP_NONE;
-        if (flipH && flipV)
-        {
-            flip_type = SDL_FLIP_HORIZONTAL_AND_VERTICAL;
-        }
-        else if (flipH)
-        {
-            flip_type = SDL_FLIP_HORIZONTAL;
-        }
-        else if (flipV)
-        {
-            flip_type = SDL_FLIP_VERTICAL;
-        }
-        SDL_RenderTextureRotated(m_renderer, texture.m_texture, NULL, &destRect, transform.rotation.z, NULL, flip_type);
-    }
-
-    void Renderer::DrawTexture(const Texture& texture, const Rect& source, float x, float y, float angle, float scale, bool flipH, bool flipV) const
-    {
-        float cameraX = (m_camera_enabled) ? m_camera.x - GetWindowWidth() * 0.5f : 0.0f;
-        float cameraY = (m_camera_enabled) ? m_camera.y - GetWindowHeight() * 0.5f : 0.0f;
-
-        SDL_FRect sourceRect;
-        sourceRect.x = source.x;
-        sourceRect.y = source.y;
-        sourceRect.w = source.w;
-        sourceRect.h = source.h;
-
-        SDL_FRect destRect;
-        destRect.w = source.w * scale;
-        destRect.h = source.h * scale;
-        destRect.x = (x + cameraX) - (destRect.w * 0.5f);
-        destRect.y = (y + cameraY) - (destRect.h * 0.5f);
-
-        // https://wiki.libsdl.org/SDL3/SDL_RenderTexture
-        SDL_FlipMode flip_type = SDL_FLIP_NONE;
-        if (flipH && flipV)
-        {
-            flip_type = SDL_FLIP_HORIZONTAL_AND_VERTICAL;
-        }
-        else if (flipH)
-        {
-            flip_type = SDL_FLIP_HORIZONTAL;
-        }
-        else if (flipV)
-        {
-            flip_type = SDL_FLIP_VERTICAL;
-        }
-        SDL_RenderTextureRotated(m_renderer, texture.m_texture, &sourceRect, &destRect, angle, NULL, flip_type);
-    }
-
-    void Renderer::DrawTexture(const Texture& texture, const Rect& source, const Transform& transform, bool flipH, bool flipV) const
-    {
-
-        float cameraX = (m_camera_enabled) ? m_camera.x - GetWindowWidth() * 0.5f : 0.0f;
-        float cameraY = (m_camera_enabled) ? m_camera.y - GetWindowHeight() * 0.5f : 0.0f;
-
-        SDL_FRect sourceRect;
-        sourceRect.x = source.x;
-        sourceRect.y = source.y;
-        sourceRect.w = source.w;
-        sourceRect.h = source.h;
-
-        SDL_FRect destRect;
-        destRect.w = source.w * transform.scale.x;
-        destRect.h = source.h * transform.scale.y;
-
-        destRect.x = (transform.position.x + cameraX) - (destRect.w * 0.5f);
-        destRect.y = (transform.position.y + cameraY) - (destRect.h * 0.5f);
-
-
-        // https://wiki.libsdl.org/SDL3/SDL_RenderTexture
-        SDL_FlipMode flip_type = SDL_FLIP_NONE;
-        if (flipH && flipV)
-        {
-            flip_type = SDL_FLIP_HORIZONTAL_AND_VERTICAL;
-        }
-        else if (flipH)
-        {
-            flip_type = SDL_FLIP_HORIZONTAL;
-        }
-        else if (flipV)
-        {
-            flip_type = SDL_FLIP_VERTICAL;
-        }
-        SDL_RenderTextureRotated(m_renderer, texture.m_texture, &sourceRect, &destRect, transform.rotation.z, NULL, flip_type);
-    }
 
     void Renderer::SetPipeline(const Pipeline& pipeline)
     {
@@ -358,6 +247,23 @@ namespace nu
         );
     }
 
+    void Renderer::CreateDepthBuffer()
+    {
+        SDL_GPUTextureCreateInfo depthInfo
+        {
+            .type = SDL_GPU_TEXTURETYPE_2D,
+            .format = SDL_GPU_TEXTUREFORMAT_D32_FLOAT,
+            .usage = SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET,
+            .width = (Uint32)GetWindowWidth(),
+            .height = (Uint32)GetWindowHeight(),
+            .layer_count_or_depth = 1,
+            .num_levels = 1,
+            .sample_count = SDL_GPU_SAMPLECOUNT_1,
+        };
+
+        m_depthTexture = SDL_CreateGPUTexture(m_gpu_device, &depthInfo);
+    }
+    
     Renderer::~Renderer()
     {
         SDL_DestroyRenderer(m_renderer);

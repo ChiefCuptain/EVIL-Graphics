@@ -54,9 +54,6 @@
     <ClInclude Include="Components\RendererComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="Components\SpriteRendererComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="Components\ColliderComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -74,12 +71,6 @@
     </ClInclude>
     <ClInclude Include="Math\Rect.h">
       <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\TextureFrames.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Components\SpriteAnimationRendererComponent.h">
-      <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Components\PhysicsComponent.h">
       <Filter>Components</Filter>
@@ -120,13 +111,7 @@
     <ClInclude Include="Renderer\Model.h">
       <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\ParticleSystem.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer\Renderer.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\Text.h">
       <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Resources\Resource.h">
@@ -156,9 +141,6 @@
     <ClInclude Include="Core\StringUtils.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Components\SpriteAnimatorRendererComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer\Pipeline.h">
       <Filter>Renderer</Filter>
     </ClInclude>
@@ -179,20 +161,8 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Components\SpriteRendererComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\TextureFrames.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Components\SpriteAnimationRendererComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="Components\PhysicsComponent.cpp">
       <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\Tilemap.cpp">
-      <Filter>Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Audio\Audio.cpp">
       <Filter>Audio</Filter>
@@ -221,13 +191,7 @@
     <ClCompile Include="Renderer\Model.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\ParticleSystem.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer\Renderer.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\Text.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Serialization\JSON.cpp">
@@ -238,9 +202,6 @@
     </ClCompile>
     <ClCompile Include="Core\GameTime.cpp">
       <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Components\SpriteAnimatorRendererComponent.cpp">
-      <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="Renderer\Pipeline.cpp">
       <Filter>Renderer</Filter>

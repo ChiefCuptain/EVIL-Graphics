@@ -16,12 +16,10 @@
 #include "Resources/ResourceManager.h"
 
 #include "Renderer/Renderer.h"
-#include "Renderer/Text.h"
 #include "Input/Input.h"
 #include "Core/GameTime.h"
 #include "Timer.h"
 #include "Math/MathUtil.h"
-#include "Renderer/ParticleSystem.h"
 #include "Audio/Audio.h"
 
 #include "Framework/Game.h"
@@ -45,7 +43,6 @@ namespace nu
 		Input& GetInput() { return m_input; }
 		Renderer& GetRenderer() { return m_renderer; }
 		GameTime& GetTime() { return m_time; }
-		ParticleSystem& GetPS() { return m_particle_system; }
 		Audio& GetAudio() { return m_audio; }
 		Engine(const Engine&) = delete;
 		Engine& operator = (const Engine&) = delete;
@@ -57,7 +54,6 @@ namespace nu
 		Renderer m_renderer;
 		Audio m_audio;
 		GameTime m_time;
-		ParticleSystem m_particle_system;
 	};
 
 }

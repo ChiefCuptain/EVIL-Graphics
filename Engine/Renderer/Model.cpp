@@ -14,6 +14,7 @@ namespace nu
 		const aiScene* scene = importer.ReadFile(filename,
 			aiProcess_Triangulate |
 			aiProcess_GenSmoothNormals |
+			aiProcess_FlipUVs |
 			aiProcess_CalcTangentSpace);
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
@@ -137,6 +138,6 @@ namespace nu
 
 		// todo: add newMesh to m_meshes
 		// Mesh holds unique_ptrs so it can't be copied, use std::move(newMesh)
-		m_meshes.push_back(std::move(newMesh));
+		m_meshes.push_back(std::move(newMesh)); 
 	}
 }
