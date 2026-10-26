@@ -21,11 +21,11 @@ using namespace nu;
         // INITIALIZATION
         Engine::Get().Initialize();
 
-        auto model = Resources().Get<Model>("Models/spot.obj", Engine::Get().GetRenderer());
-        auto texture = Resources().Get<Texture>("Textures/spot_diffuse.png", Engine::Get().GetRenderer());
+        auto model = Resources().Get<Model>("Models/bushters.obj", Engine::Get().GetRenderer());
+        auto texture = Resources().Get<Texture>("Textures/bushters_clothes_base.png", Engine::Get().GetRenderer());
 
-        auto vshader = Resources().Get<nu::Shader>("Shaders/unlit.vert", Engine::Get().GetRenderer(), 1);
-        auto fshader = Resources().Get<nu::Shader>("Shaders/unlit.frag", Engine::Get().GetRenderer(), 1, 1);
+        auto vshader = Resources().Get<nu::Shader>("Shaders/lit.vert", Engine::Get().GetRenderer(), 2);
+        auto fshader = Resources().Get<nu::Shader>("Shaders/lit.frag", Engine::Get().GetRenderer(), 1, 1);
 
         auto pipeline = std::make_shared<Pipeline>();
 
@@ -39,12 +39,31 @@ using namespace nu;
             Engine::Get().GetRenderer().GetGPUDevice(),
             Engine::Get().GetRenderer().GetWindow());
 
-        struct vertexUniform
+        // UNIFORMS
+        struct VertexUniform
         {
             glm::mat4 mvp;
+            glm::mat4 model;
         };
 
-        vertexUniform uniform;
+        struct LightUniform
+        {
+            glm::vec3 lightDirection;
+            float pad1;
+            glm::vec3 lightColor;
+            float lightIntensity;
+            glm::vec3 ambient;
+            float pad2;
+        };
+
+        LightUniform lightUniform{
+            .lightDirection{0, -1, 0},
+            .lightColor{1.0f, 0.5f, 1.0f},
+            .lightIntensity{ 1.0f },
+            .ambient{ 0.2f },
+        };
+
+        VertexUniform vertexUniform;
         glm::vec3 cameraPosition{ 0.0f, 0.0f, 5.0f };
         float rotation = 0.0f;
         // MAIN LOOP
@@ -105,9 +124,10 @@ using namespace nu;
             float aspectRatio = Engine::Get().GetRenderer().GetWindowWidth() / Engine::Get().GetRenderer().GetWindowHeight();
             auto projection = glm::perspective(glm::radians(100.0f), aspectRatio, 0.01f, 20.0f);
 
-
-            uniform.mvp = projection * view * transform.GetMatrix();
-            Engine::Get().GetRenderer().SetVertexUniform(0, &uniform, sizeof(uniform));
+            vertexUniform.model = transform.GetMatrix();
+            vertexUniform.mvp = projection * view * vertexUniform.model;
+            Engine::Get().GetRenderer().SetVertexUniform(0, &vertexUniform, sizeof(vertexUniform));
+            Engine::Get().GetRenderer().SetVertexUniform(1, &lightUniform, sizeof(lightUniform));
             Engine::Get().GetRenderer().SetFragmentUniform(0, &color, sizeof(color));
             Engine::Get().GetRenderer().SetFragmentTexture(0, *texture);
 
