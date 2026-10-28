@@ -10,6 +10,12 @@
 
 using namespace nu;
 
+enum class LightType
+{
+    DIRECTIONAL,
+    POINT,
+    SPOT,
+};
 
     int main()
     {
@@ -21,11 +27,11 @@ using namespace nu;
         // INITIALIZATION
         Engine::Get().Initialize();
 
-        auto model = Resources().Get<Model>("Models/bushters.obj", Engine::Get().GetRenderer());
-        auto texture = Resources().Get<Texture>("Textures/bushters_clothes_base.png", Engine::Get().GetRenderer());
+        auto model = Resources().Get<Model>("Models/tungsten_man.obj", Engine::Get().GetRenderer());
+        auto texture = Resources().Get<Texture>("Textures/tungsten_base.png", Engine::Get().GetRenderer());
 
-        auto vshader = Resources().Get<nu::Shader>("Shaders/lit.vert", Engine::Get().GetRenderer(), 2);
-        auto fshader = Resources().Get<nu::Shader>("Shaders/lit.frag", Engine::Get().GetRenderer(), 1, 1);
+        auto vshader = Resources().Get<nu::Shader>("Shaders/gouraud.vert", Engine::Get().GetRenderer(), 3);
+        auto fshader = Resources().Get<nu::Shader>("Shaders/gouraud.frag", Engine::Get().GetRenderer(), 1, 1);
 
         auto pipeline = std::make_shared<Pipeline>();
 
@@ -44,27 +50,52 @@ using namespace nu;
         {
             glm::mat4 mvp;
             glm::mat4 model;
+            glm::vec3 cameraPosition;
+            float pad1;
         };
 
         struct LightUniform
         {
-            glm::vec3 lightDirection;
-            float pad1;
-            glm::vec3 lightColor;
-            float lightIntensity;
+            glm::vec3 position;
+            LightType type;
+            glm::vec3 direction;
+            float innerCutoff;
+            glm::vec3 color;
+            float intensity;
             glm::vec3 ambient;
-            float pad2;
+            float outerCutoff;
         };
+
+        struct MaterialUniform
+        {
+            glm::vec4 color;
+            glm::vec2 tiling;
+            glm::vec2 offset;
+            float shininess;
+        };
+
+        MaterialUniform materialUniform{
+            .color{0.84f, 0.84f, 0.84f, 1.0f},
+            .tiling{ 1.0f },
+            .offset{ 0.0f },
+            .shininess{ 128.0f }
+        };
+
 
         LightUniform lightUniform{
-            .lightDirection{0, -1, 0},
-            .lightColor{1.0f, 0.5f, 1.0f},
-            .lightIntensity{ 1.0f },
-            .ambient{ 0.2f },
+            .position{ 7, 5, 10 },
+            .type{ LightType::POINT },
+            .direction{ 0, -1, 0 },
+            .innerCutoff{ 0.1f },
+            .color{ 0.9f, 0.9f, 0.9f },
+            .intensity{ 1.0f },
+            .ambient{ 0.3f },
+            .outerCutoff{ 0.2f }
         };
 
+
         VertexUniform vertexUniform;
-        glm::vec3 cameraPosition{ 0.0f, 0.0f, 5.0f };
+        vertexUniform.cameraPosition = glm::vec3{ 0.0f, 0.5f, 1.0f };
         float rotation = 0.0f;
         // MAIN LOOP
         bool quit = false;
@@ -87,6 +118,7 @@ using namespace nu;
             Engine::Get().Update();
 
             float dt = Engine::Get().GetTime().GetDeltaTime();
+            float time = Engine::Get().GetTime().GetTime();
             glm::vec3 direction{ 0 };
 
             // CAMERA MOVEMENT
@@ -97,7 +129,24 @@ using namespace nu;
             if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_Q)) direction.y = -1;
             if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_E)) direction.y = 1;
 
-            cameraPosition += direction * 4.0f * dt;
+            if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_1))
+            {
+                lightUniform.type = LightType::DIRECTIONAL;
+                lightUniform.position = glm::vec3(7.0f, 5.0f, 10.0f);
+            }
+            if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_2))
+            {
+                lightUniform.type = LightType::POINT;
+                lightUniform.position = glm::vec3(7.0f, 5.0f, 10.0f);
+            }
+            if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_3))
+            {
+                lightUniform.type = LightType::SPOT;
+                lightUniform.position = glm::vec3(7.0f, 10.0f, 10.0f);
+            }
+
+
+            vertexUniform.cameraPosition += direction * 4.0f * dt;
 
             // Game
 
@@ -118,7 +167,7 @@ using namespace nu;
 
             // VIEW MATRIX
 
-            auto view = glm::lookAtRH(cameraPosition, cameraPosition + glm::vec3{ 0.0f, 0.0f, -1.0f }, glm::vec3{ 0.0f, 1.0f, 0.0f });
+            auto view = glm::lookAtRH(vertexUniform.cameraPosition, vertexUniform.cameraPosition + glm::vec3{ 0.0f, 0.0f, -1.0f }, glm::vec3{ 0.0f, 1.0f, 0.0f });
 
             // PROJECTION MATRIX
             float aspectRatio = Engine::Get().GetRenderer().GetWindowWidth() / Engine::Get().GetRenderer().GetWindowHeight();
@@ -128,7 +177,8 @@ using namespace nu;
             vertexUniform.mvp = projection * view * vertexUniform.model;
             Engine::Get().GetRenderer().SetVertexUniform(0, &vertexUniform, sizeof(vertexUniform));
             Engine::Get().GetRenderer().SetVertexUniform(1, &lightUniform, sizeof(lightUniform));
-            Engine::Get().GetRenderer().SetFragmentUniform(0, &color, sizeof(color));
+            Engine::Get().GetRenderer().SetVertexUniform(2, &materialUniform, sizeof(materialUniform));
+            Engine::Get().GetRenderer().SetFragmentUniform(0, &materialUniform, sizeof(materialUniform));
             Engine::Get().GetRenderer().SetFragmentTexture(0, *texture);
 
             model->Draw(Engine::Get().GetRenderer());

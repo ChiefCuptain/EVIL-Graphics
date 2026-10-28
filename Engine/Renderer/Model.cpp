@@ -35,12 +35,6 @@ namespace nu
 	{
 		for (const auto& mesh : m_meshes)
 		{
-			// todo: set the mesh vertex buffer on the renderer with renderer.SetVertexBuffer(vertexBuffer)
-			// the buffers are stored as unique_ptr, so dereference them with *
-
-			// todo: set the mesh index buffer on the renderer with renderer.SetIndexBuffer(indexBuffer)
-
-			// todo: draw the mesh with renderer.DrawIndex(indexBuffer)
 			renderer.SetVertexBuffer(*mesh.vertexBuffer);
 			renderer.SetIndexBuffer(*mesh.indexBuffer);
 			renderer.DrawIndex(*mesh.indexBuffer);
