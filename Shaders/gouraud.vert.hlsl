@@ -39,30 +39,10 @@ Output main(Input input)
     output.texcoord = (input.texcoord * material.tiling) + material.offset;
     output.position = mul(mvp, float4(input.position, 1.0f));
     float3 worldPosition = mul(model, float4(input.position, 1.0f)).xyz;
-    float3 radiance = light.color * light.intensity;
-    float attenuation;
-    float3 L = getLightVector(light, worldPosition, attenuation);
     float3 N = normalize(mul((float3x3)model, input.normal));
-    // Diffuse
-
-    float NdotL = saturate(dot(N, L));
- 
-    float3 diffuse = radiance * NdotL * attenuation;
+    float3 V = normalize(cameraPosition - worldPosition);
     
-    output.diffuse = light.ambient + diffuse;
+    calculateLighting(light, material, worldPosition, N, V, output.diffuse, output.specular);
     
-    // SPECULAR
-    output.specular = 0;
-
-    if (NdotL > 0)
-    {
-        float3 R = reflect(-L, N);
-        float3 V = normalize(cameraPosition - worldPosition);
-        float3 H = normalize(V + L);
-        float HdotN = saturate(dot(R, V));
-        output.specular = pow(HdotN, material.shininess) * radiance * attenuation;
-
-    }
-
     return output;
 }
