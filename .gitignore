@@ -375,3 +375,5 @@ FodyWeavers.xsd
 !ThirdParty/**/*.lib
 !ThirdParty/**/*.dll
 !ThirdParty/**/*.pdb
+
+!Game/Game.vcxproj.user
