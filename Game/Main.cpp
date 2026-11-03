@@ -4,6 +4,7 @@
 #include "Renderer/IndexBuffer.h"
 #include "Renderer/Pipeline.h"
 #include "Resources/ResourceManager.h"
+#include "Framework/Scene.h"
 #include <vector>
 #include <map>
 #include <memory>
@@ -29,6 +30,9 @@ int main()
 
 	// INITIALIZATION
 	Engine::Get().Initialize();
+
+	Scene scene;
+	scene.Load("Scenes/scene.json");
 
 	auto model = Resources().Get<Model>("Models/tungsten_man.obj", Engine::Get().GetRenderer());
 	auto texture = Resources().Get<Texture>("Textures/tungsten_base.png", Engine::Get().GetRenderer());
