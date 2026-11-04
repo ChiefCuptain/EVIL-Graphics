@@ -33,8 +33,8 @@ int main()
 	auto model = Resources().Get<Model>("Models/tungsten_man.obj", Engine::Get().GetRenderer());
 	auto texture = Resources().Get<Texture>("Textures/tungsten_base.png", Engine::Get().GetRenderer());
 
-	auto vshader = Resources().Get<nu::Shader>("Shaders/gouraud.vert", Engine::Get().GetRenderer(), 3);
-	auto fshader = Resources().Get<nu::Shader>("Shaders/gouraud.frag", Engine::Get().GetRenderer(), 3, 1);
+	auto vshader = Resources().Get<nu::Shader>("Shaders/phong.vert", Engine::Get().GetRenderer(), 3);
+	auto fshader = Resources().Get<nu::Shader>("Shaders/phong.frag", Engine::Get().GetRenderer(), 3, 1);
 
 	auto pipeline = std::make_shared<Pipeline>();
 

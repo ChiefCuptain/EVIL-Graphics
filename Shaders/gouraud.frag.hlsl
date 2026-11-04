@@ -9,6 +9,7 @@ cbuffer MaterialUniforms : register(b0, space3)
 
 struct Input
 {
+    float4 position : SV_Position;
     float2 texcoord : TEXCOORD0;
     float3 diffuse : TEXCOORD1;
     float3 specular : TEXCOORD2;
@@ -24,6 +25,5 @@ Output main(Input input)
 	Output output;
     float4 albedo = u_texture.Sample(u_sampler, input.texcoord) * material.color;
     output.color = float4(albedo.rgb * input.diffuse + input.specular, albedo.a);
-
 	return output;
 }

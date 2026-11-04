@@ -26,6 +26,7 @@ namespace nu
 			}
 		};
 
+		std::cout << m_vertexBufferDescriptions.data() << std::endl;
 		// fill out the pipeline settings
 		// each field below needs a value, replace each {} using the comment beside it
 		SDL_GPUGraphicsPipelineCreateInfo pipelineCreateInfo{
@@ -42,7 +43,7 @@ namespace nu
 				.vertex_attributes = m_vertexAttributes.data(), // todo: pointer to m_vertexAttributes
 				.num_vertex_attributes = (unsigned int)m_vertexAttributes.size() // todo: number of vertex attributes
 			},
-
+			
 			// how vertices are assembled into shapes, every 3 vertices form one triangle
 			.primitive_type = SDL_GPU_PRIMITIVETYPE_TRIANGLELIST, // todo: SDL_GPU_PRIMITIVETYPE_...
 
@@ -68,7 +69,7 @@ namespace nu
 				.has_depth_stencil_target = true,
 			}
 		};
-
+		
 		// create the pipeline with SDL_CreateGPUGraphicsPipeline(device, &createInfo) and store it in m_gpuPipeline
 		m_gpuPipeline = SDL_CreateGPUGraphicsPipeline(m_gpuDevice, &pipelineCreateInfo);
 		// if the pipeline is null, creation failed

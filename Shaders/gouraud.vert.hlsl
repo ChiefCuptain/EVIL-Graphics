@@ -10,7 +10,9 @@ cbuffer VertexUniforms : register(b0, space1)
 
 cbuffer LightUniforms : register(b1, space1)
 {
-    Light light;
+    Light lights[MAX_LIGHTS];
+    uint numLights;
+    float3 ambient;
 }
 
 cbuffer MaterialUniforms : register(b2, space1)
@@ -23,6 +25,7 @@ struct Input
     float3 position : TEXCOORD0;
     float2 texcoord : TEXCOORD1;
     float3 normal : TEXCOORD2;
+    float3 tangent : TEXCOORD3;
 };
 
 struct Output
@@ -38,11 +41,14 @@ Output main(Input input)
     Output output;
     output.texcoord = (input.texcoord * material.tiling) + material.offset;
     output.position = mul(mvp, float4(input.position, 1.0f));
+    output.diffuse = ambient;
+    output.specular = float3(0.0f, 0.0f, 0.0f);
     float3 worldPosition = mul(model, float4(input.position, 1.0f)).xyz;
-    float3 N = normalize(mul((float3x3)model, input.normal));
+    float3 N = normalize(mul((float3x3) model, input.normal));
     float3 V = normalize(cameraPosition - worldPosition);
-    
-    calculateLighting(light, material, worldPosition, N, V, output.diffuse, output.specular);
-    
+    for (uint i = 0; i < numLights; i++)
+    {
+        calculateLighting(lights[i], material, worldPosition, N, V, output.diffuse, output.specular);
+    }
     return output;
 }
