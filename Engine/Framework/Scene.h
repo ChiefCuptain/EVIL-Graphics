@@ -21,6 +21,9 @@ namespace nu
 		template<typename T>
 		T* GetActorByName(const std::string& name);
 
+		template<typename T>
+		std::vector<T*> GetActorsByTag(const std::string& name);
+
 		int GetActorCountByTag(const std::string& tag) const;
 
 		template<typename T>
@@ -50,6 +53,23 @@ namespace nu
 		}
 		
 		return nullptr;
+	}
+
+	template<typename T>
+	inline std::vector<T*> Scene::GetActorsByTag(const std::string& name)
+	{
+		std::vector<T*> result;
+
+		for (auto& actor : m_actors)
+		{
+			T* actorT = dynamic_cast<T*>(actor.get());
+			if (actorT && actorT->m_tag == name)
+			{
+				result.push_back(actorT);
+			}
+		}
+
+		return result;
 	}
 
 	template<typename T>

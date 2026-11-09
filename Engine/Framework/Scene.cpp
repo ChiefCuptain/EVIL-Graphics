@@ -3,8 +3,12 @@
 #include "Framework/Scene.h"
 #include "Framework/Actor.h"
 #include "Core/Factory.h"
-#include "Components/ColliderComponent.h"
 #include "Engine.h"
+#include "Renderer/Renderer.h"
+#include "Renderer/Light.h"
+#include "Components/CameraComponent.h"
+#include "Components/LightComponent.h"
+
 
 namespace nu
 {
@@ -84,6 +88,35 @@ namespace nu
 
 	void Scene::Draw(const Renderer& renderer)
 	{
+		FrameUniform frameUniform{};
+
+		auto camera = GetActorByName<Actor>("Camera");
+		if (camera)
+		{
+			auto cameraComponent = camera->GetComponent<CameraComponent>();
+			if (cameraComponent)
+			{
+				frameUniform.cameraPosition = camera->GetTransform().position;
+				frameUniform.view = cameraComponent->GetView();
+				frameUniform.projection = cameraComponent->GetProjection();
+				frameUniform.viewProjection = cameraComponent->GetProjection();
+				frameUniform.viewProjection = frameUniform.projection * frameUniform.view;
+
+				renderer.SetVertexUniform(UniformSlot::Frame, &frameUniform, sizeof(frameUniform));
+				renderer.SetFragmentUniform(UniformSlot::Frame, &frameUniform, sizeof(frameUniform));
+			}
+		}
+		LightUniform lightUniform{};
+		auto lights = GetActorsByTag<Actor>("Lights");
+		for (auto light : lights)
+		{
+			auto lightComponent = light->GetComponent<LightComponent>();
+			if (lightComponent)
+			{
+				//lightUniform.lights[lightUniform.count++] = lightComponent->GetLightData();
+			}
+		}
+
 		for (const auto& actor : m_actors)
 		{
 			actor->Draw(renderer);

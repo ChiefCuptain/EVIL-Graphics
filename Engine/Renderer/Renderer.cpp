@@ -122,14 +122,14 @@ namespace nu
         return true;
     }
 
-    void Renderer::SetVertexUniform(uint32_t slot, const void* data, uint32_t size)
+    void Renderer::SetVertexUniform(UniformSlot slot, const void* data, uint32_t size) const
     {
-        SDL_PushGPUVertexUniformData(m_command_buffer, slot, data, size);
+        SDL_PushGPUVertexUniformData(m_command_buffer, (uint32_t)slot, data, size);
     }
 
-    void Renderer::SetFragmentUniform(uint32_t slot, const void* data, uint32_t size)
+    void Renderer::SetFragmentUniform(UniformSlot slot, const void* data, uint32_t size) const
     {
-        SDL_PushGPUFragmentUniformData(m_command_buffer, slot, data, size);
+        SDL_PushGPUFragmentUniformData(m_command_buffer, (uint32_t)slot, data, size);
 
     }
 

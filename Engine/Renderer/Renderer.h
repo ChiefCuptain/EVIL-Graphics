@@ -1,8 +1,8 @@
 #pragma once
+#include "Uniforms.h"
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3_image/SDL_image.h>
-#include "Math/Vector2.h"
 
 namespace nu {
 	class Renderer
@@ -20,8 +20,8 @@ namespace nu {
 		bool BeginFrame();
 		bool EndFrame();
 
-		void SetVertexUniform(uint32_t slot, const void* data, uint32_t size);
-		void SetFragmentUniform(uint32_t slot, const void* data, uint32_t size);
+		void SetVertexUniform(UniformSlot slot, const void* data, uint32_t size) const;
+		void SetFragmentUniform(UniformSlot slot, const void* data, uint32_t size) const;
 
 		void RenderPresent() const;
 		void RenderPoint(float x, float y) const;
@@ -32,11 +32,6 @@ namespace nu {
 
 		float GetWindowWidth() const { return m_screen_size.x; }
 		float GetWindowHeight() const { return m_screen_size.y; }
-
-		const Vector2& GetCamera() { return m_camera; }
-		void SetCamera(const Vector2& camera) { m_camera = camera; }
-		bool GetCameraEnabled() const { return m_camera_enabled; }
-		void SetCameraEnabled(bool enabled = true) { m_camera_enabled = enabled; }
 
 		SDL_GPUDevice* GetGPUDevice() const { return m_gpu_device; }
 		SDL_Window* GetWindow() const { return m_window; }
@@ -62,10 +57,8 @@ namespace nu {
 		SDL_GPURenderPass* m_render_pass = nullptr;
 		SDL_GPUTexture* m_depthTexture = nullptr;
 
-		Vector2 m_camera{ 0.0f };
-		bool m_camera_enabled = false;
 		SDL_Window* m_window = nullptr;
 		SDL_Renderer* m_renderer = nullptr;
-		Vector2 m_screen_size{ 0, 0 };
+		glm::vec2 m_screen_size{ 0, 0 };
 	};
 }
