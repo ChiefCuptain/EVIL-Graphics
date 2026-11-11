@@ -22,12 +22,12 @@ namespace nu
 		T* GetActorByName(const std::string& name);
 
 		template<typename T>
-		std::vector<T*> GetActorsByTag(const std::string& name);
+		std::vector<T*> GetActorsByTag(const std::string& tag);
 
 		int GetActorCountByTag(const std::string& tag) const;
 
 		template<typename T>
-		std::vector<T*> GetActorsByType(const std::string& name);
+		std::vector<T*> GetActorsByType(const std::string& type);
 
 		void RemoveAllActors(bool include_persistent = false);
 
@@ -56,14 +56,14 @@ namespace nu
 	}
 
 	template<typename T>
-	inline std::vector<T*> Scene::GetActorsByTag(const std::string& name)
+	inline std::vector<T*> Scene::GetActorsByTag(const std::string& tag)
 	{
 		std::vector<T*> result;
 
 		for (auto& actor : m_actors)
 		{
 			T* actorT = dynamic_cast<T*>(actor.get());
-			if (actorT && actorT->m_tag == name)
+			if (actorT && actorT->m_tag == tag)
 			{
 				result.push_back(actorT);
 			}
@@ -73,13 +73,13 @@ namespace nu
 	}
 
 	template<typename T>
-	inline std::vector<T*> Scene::GetActorsByType(const std::string& name)
+	inline std::vector<T*> Scene::GetActorsByType(const std::string& type)
 	{
 		std::vector<T*> foundActors;
 		for (auto& actor : m_actors)
 		{
 			T* actorT = dynamic_cast<T*>(actor.get());
-			if (actorT && actorT->m_type == name)
+			if (actorT && actorT->m_type == type)
 			{
 				foundActors.push_back(actorT);
 			}

@@ -18,6 +18,7 @@ namespace nu
     std::vector<std::string> GetDirectoriesIn(const std::string& path);
 
     std::vector<uint8_t> ReadBinaryFile(const std::string& path);
+    std::string GetParentDirectory(const std::string& path);
 
     bool ReadTextFile(const std::string& path, std::string& data);
     bool WriteTextFile(const std::string& path, const std::string& data, bool append = false);

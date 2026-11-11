@@ -143,6 +143,11 @@ namespace nu
 		return bytes;
 	}
 
+	std::string GetParentDirectory(const std::string& path)
+	{
+		return std::filesystem::path(path).parent_path().string();
+	}
+
 	bool ReadTextFile(const std::string& path, std::string& data)
 	{
 		// create input file stream

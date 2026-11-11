@@ -1,9 +1,9 @@
 #pragma once
+#include "MaterialInstance.h"
 #include "Uniforms.h"
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3_image/SDL_image.h>
-
 namespace nu {
 	class Renderer
 	{
@@ -36,11 +36,13 @@ namespace nu {
 		SDL_GPUDevice* GetGPUDevice() const { return m_gpu_device; }
 		SDL_Window* GetWindow() const { return m_window; }
 
-		void SetPipeline(const class Pipeline& pipeline);
-		void SetVertexBuffer(const class VertexBuffer& vertexBuffer);
-		void SetIndexBuffer(const class IndexBuffer& indexBuffer);
+		void SetPipeline(const class Pipeline& pipeline) const;
+		void SetVertexBuffer(const class VertexBuffer& vertexBuffer) const;
+		void SetIndexBuffer(const class IndexBuffer& indexBuffer) const;
 		void Draw(uint32_t vertexCount);
-		void DrawIndex(const class IndexBuffer& indexBuffer);
+		void DrawIndex(const class IndexBuffer& indexBuffer) const;
+
+		void SetMaterial(const MaterialInstance& materialInstance) const;
 
 		void CreateDepthBuffer();
 
