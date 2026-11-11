@@ -36,8 +36,5 @@
     <None Include="..\Build\Assets\Materials\tungsten_man.instance.json">
       <Filter>Assets\Materials</Filter>
     </None>
-    <None Include="..\Build\Assets\Materials\unlit.material.json">
-      <Filter>Assets\Materials</Filter>
-    </None>
   </ItemGroup>
 </Project>
