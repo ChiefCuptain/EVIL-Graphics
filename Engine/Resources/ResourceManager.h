@@ -20,6 +20,8 @@ namespace nu
 			requires std::derived_from<T, Resource>
 		res_t<T> GetWithID(const std::string& id, const std::string& name, Args&& ... args);
 
+		void Clear() { m_resources.clear(); }
+
 	private:
 		std::map<std::string, res_t<Resource>> m_resources;
 	};
@@ -39,6 +41,7 @@ namespace nu
 				std::cerr << "Resource type mismatch: " << name << "\n";
 				return res_t<T>();
 			}
+			std::cout << "Loaded resource: " << name << "\n";
 			return resource;
 		}
 
@@ -51,7 +54,7 @@ namespace nu
 		}
 
 		m_resources[name] = resource;
-
+		std::cout << "Loaded resource: " << name << "\n";
 		return resource;
 	}
 
@@ -73,10 +76,11 @@ namespace nu
 				std::cerr << "Resource type mismatch: " << id << std::endl;
 				return res_t<T>();
 			}
+		std::cout << "Loaded resource: " << name << "\n";
 
-			// return resource
+		// return resource
 			return resource;
-		}
+	}
 
 		// load resource
 		res_t<T> resource = std::make_shared<T>();
@@ -86,6 +90,7 @@ namespace nu
 			return res_t<T>();
 		}
 
+		std::cout << "Loaded resource: " << name << "\n";
 		// add resource to resource manager
 		m_resources[id] = resource;
 

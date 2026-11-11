@@ -8,6 +8,7 @@
 #include "Renderer/Pipeline.h"
 #include "Renderer/VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "MaterialInstance.h"
 
 namespace nu
 {
@@ -37,6 +38,7 @@ namespace nu
             SDL_Quit();
             return false;
         }
+        SDL_SetHint(SDL_HINT_GPU_DRIVER, "vulkan");
         SDL_GPUShaderFormat formats = SDL_GPU_SHADERFORMAT_SPIRV | SDL_GPU_SHADERFORMAT_DXIL;
         m_gpu_device = SDL_CreateGPUDevice(formats, true, NULL);
 
@@ -166,12 +168,12 @@ namespace nu
     }
 
 
-    void Renderer::SetPipeline(const Pipeline& pipeline)
+    void Renderer::SetPipeline(const Pipeline& pipeline) const
     {
         SDL_BindGPUGraphicsPipeline(m_render_pass, pipeline.m_gpuPipeline);
     }
 
-    void Renderer::SetVertexBuffer(const VertexBuffer& vertexBuffer)
+    void Renderer::SetVertexBuffer(const VertexBuffer& vertexBuffer) const
     {
         // describe which buffer to bind and where to start reading from
         SDL_GPUBufferBinding binding{
@@ -195,7 +197,7 @@ namespace nu
         );
     }
 
-    void Renderer::SetIndexBuffer(const IndexBuffer& indexBuffer)
+    void Renderer::SetIndexBuffer(const IndexBuffer& indexBuffer) const
     {
         // describe which buffer to bind and where to start reading from
         SDL_GPUBufferBinding binding{
@@ -235,7 +237,7 @@ namespace nu
         );
     }
 
-    void Renderer::DrawIndex(const IndexBuffer& indexBuffer)
+    void Renderer::DrawIndex(const IndexBuffer& indexBuffer) const
     {
         SDL_DrawGPUIndexedPrimitives(
             m_render_pass,
@@ -245,6 +247,12 @@ namespace nu
             0,
             0
         );
+    }
+
+    void Renderer::SetMaterial(const MaterialInstance& materialInstance) const
+    {
+        SetPipeline(materialInstance.GetMaterial().GetPipeline());
+        materialInstance.Bind(m_command_buffer, m_render_pass);
     }
 
     void Renderer::CreateDepthBuffer()

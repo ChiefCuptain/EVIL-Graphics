@@ -107,13 +107,14 @@ namespace nu
 			}
 		}
 		LightUniform lightUniform{};
+		lightUniform.ambient = glm::vec3{ 0.2f };
 		auto lights = GetActorsByTag<Actor>("Lights");
 		for (auto light : lights)
 		{
 			auto lightComponent = light->GetComponent<LightComponent>();
 			if (lightComponent)
 			{
-				//lightUniform.lights[lightUniform.count++] = lightComponent->GetLightData();
+				lightUniform.lights[lightUniform.count++] = lightComponent->GetLightData();
 			}
 		}
 
