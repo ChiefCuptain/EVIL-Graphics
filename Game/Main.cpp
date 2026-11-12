@@ -11,8 +11,6 @@
 #include <map>
 #include <memory>
 
-#define CHECK_UNIFORM_BOUNDARY(T) static_assert((sizeof(T) % 16) == 0);
-
 using namespace nu;
 
 int main()
@@ -36,6 +34,7 @@ int main()
 		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
 			// UPDATE
+			Engine::Get().GetEditor().ProcessEvent(event);
 			if (event.type == SDL_EVENT_QUIT) {
 				quit = true;
 			}
@@ -44,17 +43,23 @@ int main()
 			}
 		}
 
-		// Engine
+		// ENGINE
 		Engine::Get().Update();
 		float dt = Engine::Get().GetTime().GetDeltaTime();
-		// Scene
+		// SCENE
 		scene.Update(dt);
+
+		// EDITOR
+		Engine::Get().GetEditor().BeginFrame();
+		Engine::Get().GetEditor().Update();
+
 
 		// RENDER
 		renderer.BeginFrame();
 
 		scene.Draw(renderer);
-
+		renderer.EndRenderPass();
+		Engine::Get().GetEditor().Draw(renderer);
 		renderer.EndFrame();
 
 	}

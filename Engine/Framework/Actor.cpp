@@ -65,12 +65,6 @@ namespace nu {
         }
     }
 
-    void Actor::SetTransform(const Transform& transform)
-    {
-        SetPosition(transform.position);
-        SetRotation(transform.rotation);
-        SetScale(transform.scale);
-    }
 
     void Actor::ProcessLifespan(float dt)
     {

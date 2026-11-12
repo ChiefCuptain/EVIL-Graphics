@@ -30,8 +30,8 @@ struct Light
 struct Lights
 {
     Light lights[MAX_LIGHTS];
-    uint numLights;
     float3 ambient;
+    uint numLights;
 };
 
 float calculateAttenuation(float distance, float range)

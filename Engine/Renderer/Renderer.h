@@ -12,21 +12,12 @@ namespace nu {
 		bool Initialize(const char* name, int width, int height);
 		void Quit();
 
-		void SetColor(Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha = 255) const;
-		void SetColorFloat(float red, float green, float blue, float alpha = 1.0f) const;
-
-		void Clear();
 
 		bool BeginFrame();
 		bool EndFrame();
 
 		void SetVertexUniform(UniformSlot slot, const void* data, uint32_t size) const;
 		void SetFragmentUniform(UniformSlot slot, const void* data, uint32_t size) const;
-
-		void RenderPresent() const;
-		void RenderPoint(float x, float y) const;
-		void RenderLine(float x1, float y1, float x2, float y2) const;
-		void RenderRect(float x, float y, float width, float height, bool fill) const;
 
 		void SetFragmentTexture(uint32_t slot, const class Texture& texture);
 
@@ -43,6 +34,10 @@ namespace nu {
 		void DrawIndex(const class IndexBuffer& indexBuffer) const;
 
 		void SetMaterial(const MaterialInstance& materialInstance) const;
+		
+		void EndRenderPass();
+		SDL_GPUCommandBuffer* GetGPUCommandBuffer() const { return m_command_buffer; }
+		SDL_GPUTexture* GetGPUSwapchainTexture() const { return m_swapchainTexture; }
 
 		void CreateDepthBuffer();
 
@@ -58,9 +53,9 @@ namespace nu {
 		SDL_GPUCommandBuffer* m_command_buffer = nullptr;
 		SDL_GPURenderPass* m_render_pass = nullptr;
 		SDL_GPUTexture* m_depthTexture = nullptr;
+		SDL_GPUTexture* m_swapchainTexture = nullptr;
 
 		SDL_Window* m_window = nullptr;
-		SDL_Renderer* m_renderer = nullptr;
 		glm::vec2 m_screen_size{ 0, 0 };
 	};
 }

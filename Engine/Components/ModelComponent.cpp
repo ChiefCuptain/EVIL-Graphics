@@ -14,8 +14,8 @@ namespace nu
 			.normalMatrix = m_owner->GetTransform().GetMatrix()
 		};
 
-		r.SetVertexUniform(UniformSlot::Frame, &objectUniform, sizeof(objectUniform));
-		r.SetFragmentUniform(UniformSlot::Frame, &objectUniform, sizeof(objectUniform));
+		r.SetVertexUniform(UniformSlot::Object, &objectUniform, sizeof(objectUniform));
+		r.SetFragmentUniform(UniformSlot::Object, &objectUniform, sizeof(objectUniform));
 
 		m_model->Draw(r, m_materials);
 	}

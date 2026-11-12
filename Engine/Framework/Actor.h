@@ -45,11 +45,10 @@ namespace nu
 
         const Transform& GetTransform() const { return m_transform; }
 
-        void SetTransform(const Transform& transform);
+        void SetRotation(const glm::vec3& rotation) { m_transform.SetRotation(rotation); }
+        void SetTransform(const Transform& transform) { m_transform = transform; }
 
         void SetPosition(const glm::vec3& position) { m_transform.position = position; }
-
-        void SetRotation(const glm::quat& rotation) { m_transform.rotation = rotation; }
 
         void SetScale(const glm::vec3& scale) { m_transform.scale = scale; }
 

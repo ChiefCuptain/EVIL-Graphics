@@ -23,6 +23,7 @@
 #include "Audio/Audio.h"
 
 #include "Framework/Game.h"
+#include "Editor/Editor.h"
 
 #include <iostream>
 #include <vector>
@@ -42,8 +43,9 @@ namespace nu
 
 		Input& GetInput() { return m_input; }
 		Renderer& GetRenderer() { return m_renderer; }
-		GameTime& GetTime() { return m_time; }
 		Audio& GetAudio() { return m_audio; }
+		GameTime& GetTime() { return m_time; }
+		Editor& GetEditor() { return *m_editor; }
 		Engine(const Engine&) = delete;
 		Engine& operator = (const Engine&) = delete;
 
@@ -54,6 +56,7 @@ namespace nu
 		Renderer m_renderer;
 		Audio m_audio;
 		GameTime m_time;
+		std::unique_ptr<Editor> m_editor;
 	};
 
 }

@@ -15,7 +15,6 @@ namespace nu
     void Renderer::Quit()
     {
         TTF_Quit();
-        SDL_DestroyRenderer(m_renderer);
         SDL_DestroyWindow(m_window);
         SDL_Quit();
     }
@@ -51,20 +50,6 @@ namespace nu
         return true;
     }
 
-    void Renderer::SetColor(Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha) const
-    {
-        SDL_SetRenderDrawColor(m_renderer, red, green, blue, alpha);
-    }
-
-    void Renderer::SetColorFloat(float red, float green, float blue, float alpha) const
-    {
-        SDL_SetRenderDrawColorFloat(m_renderer, red, green, blue, alpha);
-    }
-
-    void Renderer::Clear() {
-        SDL_RenderClear(m_renderer);
-    }
-
     bool Renderer::BeginFrame()
     {
         m_command_buffer = SDL_AcquireGPUCommandBuffer(m_gpu_device);
@@ -75,18 +60,17 @@ namespace nu
         }
 
 
-        SDL_GPUTexture* swapchainTexture = nullptr;
-        if (!SDL_WaitAndAcquireGPUSwapchainTexture(m_command_buffer, m_window, &swapchainTexture, nullptr, nullptr))
+        if (!SDL_WaitAndAcquireGPUSwapchainTexture(m_command_buffer, m_window, &m_swapchainTexture, nullptr, nullptr))
         {
             std::cerr << "Could not acquire swapchain texture: " << SDL_GetError() << std::endl;
             return false;
         }
 
-        if (swapchainTexture != nullptr)
+        if (m_swapchainTexture != nullptr)
         {
             // configure the color target attachments (This handles clearing the screen)
             SDL_GPUColorTargetInfo color_target_info{};
-            color_target_info.texture = swapchainTexture;
+            color_target_info.texture = m_swapchainTexture;
             color_target_info.clear_color = SDL_FColor{ 0.3f, 0.3f, 0.3f, 1.0f };
             color_target_info.load_op = SDL_GPU_LOADOP_CLEAR;
             color_target_info.store_op = SDL_GPU_STOREOP_STORE;
@@ -107,6 +91,7 @@ namespace nu
 
     bool Renderer::EndFrame()
     {
+        EndRenderPass();
         if (m_render_pass)
         {
             SDL_EndGPURenderPass(m_render_pass);
@@ -133,27 +118,6 @@ namespace nu
     {
         SDL_PushGPUFragmentUniformData(m_command_buffer, (uint32_t)slot, data, size);
 
-    }
-
-    void Renderer::RenderPresent() const
-    { 
-        SDL_RenderPresent(m_renderer);
-    }
-
-    void Renderer::RenderPoint(float x, float y) const
-    {
-        SDL_RenderPoint(m_renderer, x, y);
-    }
-
-    void Renderer::RenderLine(float x1, float y1, float x2, float y2) const
-    {
-        SDL_RenderLine(m_renderer, x1, y1, x2, y2);
-    }
-
-    void Renderer::RenderRect(float x, float y, float width, float height, bool fill = true) const
-    {
-        SDL_FRect rect{ x, y, width, height };
-        (fill) ? SDL_RenderFillRect(m_renderer, &rect) : SDL_RenderRect(m_renderer, &rect);
     }
 
     void Renderer::SetFragmentTexture(uint32_t slot, const Texture& texture)
@@ -255,6 +219,15 @@ namespace nu
         materialInstance.Bind(m_command_buffer, m_render_pass);
     }
 
+    void Renderer::EndRenderPass()
+    {
+        if (m_render_pass)
+        {
+            SDL_EndGPURenderPass(m_render_pass);
+            m_render_pass = nullptr;
+        }
+    }
+
     void Renderer::CreateDepthBuffer()
     {
         SDL_GPUTextureCreateInfo depthInfo
@@ -274,7 +247,6 @@ namespace nu
     
     Renderer::~Renderer()
     {
-        SDL_DestroyRenderer(m_renderer);
         SDL_DestroyWindow(m_window);
         SDL_Quit();
     }

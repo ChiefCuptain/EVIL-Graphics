@@ -14,12 +14,15 @@ namespace nu
 		m_renderer.Initialize("EVIL Graphics", 1920, 1080);
 		m_input.Initialize();
 		m_audio.Initialize();
+		m_editor = std::make_unique<Editor>();
+		m_editor->Initialize(m_renderer);
 
 		return true;
 	}
 
 	void Engine::Quit()
 	{
+		m_editor->Quit();
 		m_audio.Quit();
 		m_input.Quit();
 		m_renderer.Quit();

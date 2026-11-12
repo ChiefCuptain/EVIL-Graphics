@@ -99,16 +99,17 @@ namespace nu
 				frameUniform.cameraPosition = camera->GetTransform().position;
 				frameUniform.view = cameraComponent->GetView();
 				frameUniform.projection = cameraComponent->GetProjection();
-				frameUniform.viewProjection = cameraComponent->GetProjection();
 				frameUniform.viewProjection = frameUniform.projection * frameUniform.view;
 
 				renderer.SetVertexUniform(UniformSlot::Frame, &frameUniform, sizeof(frameUniform));
 				renderer.SetFragmentUniform(UniformSlot::Frame, &frameUniform, sizeof(frameUniform));
 			}
 		}
+
 		LightUniform lightUniform{};
 		lightUniform.ambient = glm::vec3{ 0.2f };
-		auto lights = GetActorsByTag<Actor>("Lights");
+
+		auto lights = GetActorsByTag<Actor>("Light");
 		for (auto light : lights)
 		{
 			auto lightComponent = light->GetComponent<LightComponent>();
@@ -118,9 +119,13 @@ namespace nu
 			}
 		}
 
+		renderer.SetVertexUniform(UniformSlot::Light, &lightUniform, sizeof(lightUniform));
+		renderer.SetFragmentUniform(UniformSlot::Light, &lightUniform, sizeof(lightUniform));
+
 		for (const auto& actor : m_actors)
 		{
-			actor->Draw(renderer);
+			if (actor && actor->IsActive())
+				actor->Draw(renderer);
 		}
 	}
 
